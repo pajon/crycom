@@ -4,7 +4,7 @@ var controller = require('./lib/controller');
 var client = require('./lib/client');
 var db = require('./lib/database');
 
-db.connect();
+//db.connect();
 
 
 
