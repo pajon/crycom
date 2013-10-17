@@ -49,10 +49,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="auth.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="auth.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/controller/auth.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="21" selection-start="1072" selection-end="1072" vertical-scroll-proportion="0.37383178">
+            <state line="34" column="21" selection-start="1072" selection-end="1072" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="5" selection-start="103" selection-end="103" vertical-scroll-proportion="0.37383178">
               <folding />
             </state>
           </provider>
@@ -86,7 +95,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/lib/message.js" />
         <option value="$PROJECT_DIR$/lib/log.js" />
         <option value="$PROJECT_DIR$/lib/model/message.js" />
         <option value="$PROJECT_DIR$/lib/database.js" />
@@ -102,6 +110,7 @@
         <option value="$PROJECT_DIR$/lib/controller.js" />
         <option value="$PROJECT_DIR$/lib/packet.js" />
         <option value="$PROJECT_DIR$/lib/controller/message.js" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -440,11 +449,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/model/message.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/mongoose/lib/utils.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="418" column="0" selection-start="8826" selection-end="8826" vertical-scroll-proportion="0.31623933" />
@@ -529,7 +533,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/controller/auth.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="21" selection-start="1072" selection-end="1072" vertical-scroll-proportion="0.37383178">
+        <state line="34" column="21" selection-start="1072" selection-end="1072" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="5" selection-start="103" selection-end="103" vertical-scroll-proportion="0.37383178">
           <folding />
         </state>
       </provider>
