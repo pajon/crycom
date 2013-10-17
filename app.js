@@ -9,7 +9,7 @@ var db = require('./lib/database');
 
 
 var http = require('http')
-var port = process.env.PORT || 80;
+var port = 80;
 
 var server = http.createServer();
 server.listen(port);
