@@ -1,0 +1,13 @@
+{
+  "name": "CryCom-Server",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "ursa": "0.8.0",
+    "ws": "0.4.30",
+    "node-cassandra-cql": "0.2.2-1"
+  }
+}
