@@ -4,19 +4,10 @@ var controller = require('./lib/controller');
 var client = require('./lib/client');
 var db = require('./lib/database');
 
-//db.connect();
+// CONNECT TO DATABASE
+db.connect();
 
-
-
-var http = require('http')
-var port = process.env.PORT || 5000;
-
-var server = http.createServer();
-server.listen(port);
-
-console.log('http server listening on %d', port);
-
-var wss = new WebSocketServer({server: server, port: 8000})
+var wss = new WebSocketServer({port: 8000})
 
 wss.on('connection', function (ws) {
     ws.client = new Client(ws);
