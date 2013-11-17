@@ -1,6 +1,7 @@
 
 Message = function() {
-    this.address = null;
+    this.source = null;
+    this.destination = null;
     this.data = null;
     this.key = null;
     this.id = null;
@@ -13,12 +14,20 @@ Message.prototype.setId = function(address) {
 Message.prototype.getId = function() {
     return this.id;
 };
-Message.prototype.setAddress = function(address) {
-    this.address = address;
+Message.prototype.setSource = function(address) {
+    this.source = address;
 };
 
-Message.prototype.getAddress = function() {
-    return this.address;
+Message.prototype.getSource = function() {
+    return this.source;
+};
+
+Message.prototype.setDestination = function(address) {
+    this.destination = address;
+};
+
+Message.prototype.getDestination = function() {
+    return this.destination;
 };
 
 Message.prototype.setData = function(data) {
@@ -38,7 +47,7 @@ Message.prototype.getKey = function() {
 };
 
 Message.prototype.decrypt = function() {
-    var keys = chat.decrypt(bintohex(this.key), "byte");
+    var keys = chat.decrypt(bintohex(this.getKey()), "byte");
 
     var key = CryptoJS.enc.Hex.parse(keys.substr(0, keys.length / 2));
     var iv = CryptoJS.enc.Hex.parse(keys.substr(keys.length / 2));

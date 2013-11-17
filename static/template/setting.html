@@ -1,0 +1,33 @@
+<div class="cc-form">
+    <table>
+        <tr>
+            <td>Certificate:</td>
+            <td>
+                <button type="button" class="btn btn-warning btn-default btn-small" ng-click="exportCertificate()">
+                    Export certificate
+                </button>
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td>
+                <br>
+                <input id="certFile" type="file">
+                <button type="button" class="btn btn-warning btn-default btn-small" ng-click="importCertificate('certFile')">
+                    Import certificate
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <br>
+                <button type="button" class="btn btn-danger btn-default btn-small" ng-click="deleteCertificate()">
+                    Delete certificate
+                </button>
+            </td>
+        </tr>
+
+    </table>
+</div>

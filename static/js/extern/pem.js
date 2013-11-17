@@ -110,13 +110,7 @@ RSAKey.prototype.publicPEMRAW = function() {
 
 
 RSAKey.prototype.parsePEM = function(pem) {
-    
-    console.log(Base64.unarmor(pem));
-    
     var pem = ASN1.decode(Base64.unarmor(pem)).sub;
-    
-    console.log(pem);
-    
     return this.setPrivateEx(pem[1].content(), pem[2].content(), pem[3].content(), pem[4].content(), pem[5].content(), pem[6].content(), pem[7].content(), pem[8].content());
 };
 

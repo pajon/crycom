@@ -76,10 +76,10 @@ header span.logo {
     padding:  20px 40px;
 }
 
-.cc-body {
+#content {
     height: 100%;
     width: 100%;
-    
+
     border-top: 1px solid #3C3C3C;
     overflow: hidden;
 }
@@ -102,6 +102,17 @@ header span.logo {
     
     overflow: auto;
 }
+
+#content.cc-onepage .cc-panel {
+    display: none;
+}
+
+#content.cc-onepage .cc-content {
+    width: 100%;
+    margin-left: 0px;
+
+}
+
 
 .cc-panel .cc-panel-head {
     display: block;
@@ -234,7 +245,7 @@ div.cc-form div.cc-label {
     width: 200px;
 }
 
-input {
+input{
     width: 300px;
     background-color: #00FF00;
 }
@@ -264,4 +275,12 @@ ul.cc-message-menu li {
 ul.cc-message-menu li:hover {
     background-color:  #E0E0E0;
     cursor: pointer;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+.register-form {
+    padding-top: 50px;
 }

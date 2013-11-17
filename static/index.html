@@ -2,8 +2,6 @@
 <html ng-app="chatApp">
     <head>
         <title>CryCom IM</title>
-        <meta name='copyright' content='Copyright (c) Patrik Štrba'>
-        <!--<link rel='stylesheet' type='text/css' href='/css/style.css' media='screen'>-->
 
         <meta charset="UTF-8">
 
@@ -17,7 +15,8 @@
         <script type="text/javascript" src="/js/extern/base64.js"></script>
         <script type="text/javascript" src="/js/extern/pem.js"></script>
 
-        <script type="text/javascript" src="/js/extern/jquery.json-2.4.min.js"></script>
+        <script type="text/javascript" src="/js/extern/jquery-ui-1.10.3.custom.js"></script>
+        <script type="text/javascript" src="/js/extern/jquery.json.js"></script>
         <script type="text/javascript" src="/js/extern/jstorage.js"></script>
         <script type="text/javascript" src="/js/extern/sha256.js"></script>
         <script type="text/javascript" src="/js/extern/aes.js"></script>    
@@ -27,16 +26,16 @@
 
         <script type="text/javascript" src="/js/extern/handlebars.js"></script>
 
-        <script type="text/javascript" src="/js/extern/angular.min.js"></script>
-        <script type="text/javascript" src="/js/chat/app.js"></script>
+        <script type="text/javascript" src="/js/extern/angular.js"></script>
+        <script type="text/javascript" src="/js/extern/angular-route.js"></script>
+        <script type="text/javascript" src="/js/chat/angular/services.js"></script>
 
         <script type='text/javascript' src='/js/chat/class/packet.js'></script>
         <script type='text/javascript' src='/js/chat/class/friend.js'></script>
         <script type='text/javascript' src='/js/chat/class/message.js'></script>
-        <script type='text/javascript' src='/js/chat/application.js'></script>
+        <script type='text/javascript' src='/js/chat/angular/services.js'></script>
+        <script type='text/javascript' src='/js/chat/angular/controllers.js'></script>
         <script type='text/javascript' src='/js/chat/chat.js'></script>
-        <script type='text/javascript' src='/js/chat/templateHelper.js'></script>
-        <script type='text/javascript' src='/js/chat/messageManager.js'></script>
 
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,9 +52,11 @@
 
             <div class="navbar">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="javascript:void(0);" click-link="/message">Messages</a></li>
-                    <li><a href="#/message/1">Contacts</a></li>
-                    <li><a href="javascript:void(0);">Contact</a></li>
+                    <li class="active"><a href="#/message">Messages</a></li>
+                    <li><a href="#/message/1">Message 1</a></li>
+                    <li><a href="javascript:void(0);" onclick="$('#content').addClass('cc-onepage');">Message 1</a></li>
+                    <li><a href="javascript:void(0);" onclick="$('#content').removeClass('cc-onepage');">Message 1</a></li>
+                    <!-- <li><a href="#/contact/all">All Contacts</a></li> -->
                 </ul>
             </div>  
 
@@ -66,7 +67,7 @@
             </div>
 
             <div class="btn-group pull-right" style="margin: 15px 30px 0px 0px;">
-                <button type="button" class="btn btn-toolbar btn-default btn-small" onclick="application.render('setting');">
+                <button type="button" class="btn btn-toolbar btn-default btn-small" click-link="/setting">
                     Settings
                 </button>
             </div>
@@ -79,22 +80,23 @@
         </header>
 
 
-        <div class="cc-body">
+        <div id="content">
             <div class="cc-panel">
-                <span class="cc-panel-head" onclick="application.render('index');">Messages:</span>
-                <ul class="cc-message-menu">
-                    <li>Received messages</li>
-                    <li>Sent messages</li>
+                <span class="cc-panel-head">Messages:</span>
+                <ul class="cc-message-menu" ng-controller="MessageListController">
+                    <li ng-click="loadReceived()">Received messages</li>
+                    <li ng-click="loadSent()">Sent messages</li>
                 </ul>   
 
-                <span class="cc-panel-head" onclick="application.render('contact');">Contacts:</span>
+                <span class="cc-panel-head">Contacts:</span>
                 <ul class="cc-friend-list" ng-controller="ContactController">
                     <li ng-repeat="contact in contacts" data-key="{{contact.key}}">
                         {{contact.name}}   
-                        <button style="float: right;margin-right: 10px;margin-top: -2px;" onclick="application.render('newMessage', {address: '{{contact.key}}'});">
+                        <button style="float: right;margin-right: 10px;margin-top: -2px;" click-link="/message/new/{{contact.key}}" type="button">
                             MSG
                         </button>
                     </li>
+                    <li ng-hide="contacts.length">No items found</li>
                 </ul>
             </div>
 
