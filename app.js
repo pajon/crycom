@@ -20,7 +20,7 @@ db.connect();
 
 var port = process.env.PORT || 8000;
 
-var wss = new WebSocketServer({port: port})
+var wss = new WebSocketServer({server: server})
 
 wss.on('connection', function (ws) {
     ws.client = new Client(ws);
