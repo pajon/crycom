@@ -4,6 +4,17 @@ var controller = require('./lib/controller');
 var client = require('./lib/client');
 var db = require('./lib/database');
 
+var http = require('http')
+    , express = require('express')
+    , app = express()
+    , port = process.env.PORT || 5000;
+
+app.use(express.static(__dirname + '/static'));
+
+var server = http.createServer(app);
+server.listen(port);
+
+
 // CONNECT TO DATABASE
 db.connect();
 
