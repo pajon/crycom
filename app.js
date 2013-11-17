@@ -7,7 +7,9 @@ var db = require('./lib/database');
 // CONNECT TO DATABASE
 db.connect();
 
-var wss = new WebSocketServer({port: 8000})
+var port = process.env.PORT || 8000;
+
+var wss = new WebSocketServer({port: port})
 
 wss.on('connection', function (ws) {
     ws.client = new Client(ws);
