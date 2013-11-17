@@ -1,9 +1,140 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-ahooj :)
-</body>
+<!DOCTYPE HTML>
+<html ng-app="chatApp">
+    <head>
+        <title>CryCom IM</title>
+        <meta name='copyright' content='Copyright (c) Patrik Štrba'>
+        <!--<link rel='stylesheet' type='text/css' href='/css/style.css' media='screen'>-->
+
+        <meta charset="UTF-8">
+
+        <script type="text/javascript" src="/js/extern/jquery.js"></script>
+        <script type="text/javascript" src="/js/extern/jsbn.js"></script>
+        <script type="text/javascript" src="/js/extern/jsbn2.js"></script>
+        <script type="text/javascript" src="/js/extern/prng4.js"></script>
+        <script type="text/javascript" src="/js/extern/rng.js"></script>
+        <script type="text/javascript" src="/js/extern/rsa.js"></script>
+        <script type="text/javascript" src="/js/extern/rsa2.js"></script>
+        <script type="text/javascript" src="/js/extern/base64.js"></script>
+        <script type="text/javascript" src="/js/extern/pem.js"></script>
+
+        <script type="text/javascript" src="/js/extern/jquery.json-2.4.min.js"></script>
+        <script type="text/javascript" src="/js/extern/jstorage.js"></script>
+        <script type="text/javascript" src="/js/extern/sha256.js"></script>
+        <script type="text/javascript" src="/js/extern/aes.js"></script>    
+
+
+        <script type="text/javascript" src="/js/extern/asn1.js"></script>   
+
+        <script type="text/javascript" src="/js/extern/handlebars.js"></script>
+
+        <script type="text/javascript" src="/js/extern/angular.min.js"></script>
+        <script type="text/javascript" src="/js/chat/app.js"></script>
+
+        <script type='text/javascript' src='/js/chat/class/packet.js'></script>
+        <script type='text/javascript' src='/js/chat/class/friend.js'></script>
+        <script type='text/javascript' src='/js/chat/class/message.js'></script>
+        <script type='text/javascript' src='/js/chat/application.js'></script>
+        <script type='text/javascript' src='/js/chat/chat.js'></script>
+        <script type='text/javascript' src='/js/chat/templateHelper.js'></script>
+        <script type='text/javascript' src='/js/chat/messageManager.js'></script>
+
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="/js/extern/bootstrap.js"></script>
+        <link href="/css/bootstrap.css" rel="stylesheet" media="screen">
+        <link href="/css/bootstrap-glyphicons.css" rel="stylesheet" media="screen">
+
+        <link href="/css/custom.css" rel="stylesheet" media="screen">
+    </head>
+
+    <body ng-controller="AppController">
+        <header>
+            <a href="/"><span class="logo">Crycom</span></a>
+
+            <div class="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="javascript:void(0);" click-link="/message">Messages</a></li>
+                    <li><a href="#/message/1">Contacts</a></li>
+                    <li><a href="javascript:void(0);">Contact</a></li>
+                </ul>
+            </div>  
+
+            <div class="btn-group pull-right" style="margin: 15px 30px 0px 0px;">
+                <button type="button" class="btn btn-danger btn-default btn-small">
+                    Logout 
+                </button>
+            </div>
+
+            <div class="btn-group pull-right" style="margin: 15px 30px 0px 0px;">
+                <button type="button" class="btn btn-toolbar btn-default btn-small" onclick="application.render('setting');">
+                    Settings
+                </button>
+            </div>
+
+            <div class="btn-group pull-right" style="margin: 15px 30px 0px 0px;">
+                <button type="button" class="btn btn-info btn-default btn-small" onclick="application.render('addContact');">
+                    Add friend 
+                </button>
+            </div>
+        </header>
+
+
+        <div class="cc-body">
+            <div class="cc-panel">
+                <span class="cc-panel-head" onclick="application.render('index');">Messages:</span>
+                <ul class="cc-message-menu">
+                    <li>Received messages</li>
+                    <li>Sent messages</li>
+                </ul>   
+
+                <span class="cc-panel-head" onclick="application.render('contact');">Contacts:</span>
+                <ul class="cc-friend-list" ng-controller="ContactController">
+                    <li ng-repeat="contact in contacts" data-key="{{contact.key}}">
+                        {{contact.name}}   
+                        <button style="float: right;margin-right: 10px;margin-top: -2px;" onclick="application.render('newMessage', {address: '{{contact.key}}'});">
+                            MSG
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="cc-content">
+                <div ng-view></div>
+            </div>
+        </div>
+
+        <div class="developer-toogle"><a href="#" onclick="$('.developer').toggle();
+                            $('.developer-toogle').css({bottom: $('.developer').css('display') === 'none' ? '0px' : '149px'});">OPEN/CLOSE</a></div>
+        <div class="developer">
+            <ul style="float: left">       
+                <li><a href="#" onclick="chat.connect('ws://localhost:8000');">Connect Localhost</a></li>
+                <li><a href="#" onclick="chat.connect('ws://94.229.35.149:8000');">Connect djmetla</a></li>
+                <li><a href="#" onclick="chat.login();">Login #1</a></li>
+                <li><a href="#" onclick="chat.loadContacts();">Load friends</a></li>
+                <li><a href="#" onclick="chat.renderFriends();">Render friends</a></li>
+                <li><a href="#" onclick="chat.generateKeys();">KeyGen</a></li>
+                <li><a href="#" onclick="chat.exportKeys();">Export keys</a></li>
+            </ul>
+
+            <div style="float: left">
+                <div id="key"></div>
+                LOG:<br>
+                <div id="debug"></div>
+            </div>
+
+            <div class="cc-form">
+                <form accept-charset="UTF-8" action="" method="POST">
+                    Adresa: <input id="dst" type='text' value='' placeholder='Address' style='width:400px' /><br>
+                    Type: <input id="ptype" type='text' value='0' placeholder='Type' style='width:50px' /><br>
+                    SubType: <input id="psubtype" type='text' value='0' placeholder='Subtype' style='width:50px' /><br>
+
+                    <textarea id="message" name="new_message" placeholder="Type in your message" cols="30" rows="1"></textarea>
+
+                    <button type="button" class="btn btn-default btn-small" onclick="chat.send(hextobin($('#dst').val()));">
+                        Answer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </body>
 </html>

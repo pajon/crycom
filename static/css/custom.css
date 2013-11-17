@@ -1,0 +1,267 @@
+.developer {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 150px;
+    border-top: 1px solid #000000;
+    background-color: #EEE;
+    
+    display: none;
+}
+
+.developer-toogle {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    border: 1px solid #000000;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+header {
+    width: 100%;
+    
+    height: 60px;
+    
+    background-color: #F2F2F2;
+}
+
+header span.logo {
+    color: #6D99BF;
+    background-color: #3C3C3C;
+    display: inline-block;
+    width: 300px;
+    height: 60px;
+    overflow: hidden;
+    float: left;
+    text-align: center;
+    
+    padding-top: 10px;
+    
+    font-size: 28px;
+}
+
+.clear { clear: both; }
+
+
+.navbar {
+    z-index: 20;
+    margin: 0;
+    display: inline-block;
+    float: left;
+    
+    padding: 0px;
+}
+
+.navbar > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.navbar > ul > li {
+    padding: 0px;
+    margin: 0px;
+    
+    background-color: #F2F2F2;
+}
+
+.navbar > ul > li > a {
+    display: block;
+    padding:  20px 40px;
+}
+
+.cc-body {
+    height: 100%;
+    width: 100%;
+    
+    border-top: 1px solid #3C3C3C;
+    overflow: hidden;
+}
+
+.cc-panel {
+    height: 100%;
+    
+    width: 300px;
+    float: left;
+    border-right: 1px solid #3C3C3C;
+}
+
+.cc-content {
+    margin-left: 300px;
+    float: none;
+    
+    height: 100%; 
+    padding-bottom: 60px;
+    background-color: #F6F6F6;
+    
+    overflow: auto;
+}
+
+.cc-panel .cc-panel-head {
+    display: block;
+   
+    padding-left: 5px;
+    
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+ul.cc-friend-list {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    border-top: 1px solid #3C3C3C;
+
+}
+ul.cc-friend-list > li {
+    margin: 0px;
+    
+    padding: 10px 0px;
+    padding-left: 10px;
+    
+    width: 299px;
+    background-color:  #F0F0F0;
+    border-bottom: 1px solid #3C3C3C;
+}
+
+ul.cc-friend-list > li:hover {
+    background-color:  #E0E0E0;
+    cursor: pointer;
+}
+
+div.cc-window {
+    padding: 20px;
+    background-color: #FFFFFF;
+    
+    margin-bottom: 30px;
+}
+
+div.cc-table {
+    width: 100%;
+    height:400px;
+    overflow: auto;
+}
+
+div.cc-row {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
+    
+    background-color: white;
+    
+    border-bottom: 1px solid #C4C4C4;
+}
+
+div.cc-row:hover {
+    background-color: #F0F0F0;
+    cursor: pointer;
+}
+div.cc-row span {
+    padding-left: 20px;
+}
+
+div.cc-row span.source {
+    display: inline-block;
+    width: 150px;
+}
+
+div.cc-row span.date {
+    padding-right: 20px;
+    float: right;
+}
+
+div.cc-form {
+    float: right
+}
+
+div.cc-message {
+    width: 100%;
+}
+
+div.cc-message-body {
+    margin: 5px;
+    margin-top: 0px;
+    padding-top: 5px;
+}
+
+div.cc-message-head {
+    font-size: 16px;
+}
+
+div.cc-message-content {
+    border: 1px solid #CCCCCC;  
+    
+    padding: 5px;
+    background-color: #FFFFFF;
+}
+
+div.cc-message-form-head {
+    margin-left: 5px;
+    font-size: 16px;
+    margin-top: 30px;
+}
+
+div.cc-message-form {
+    margin: 5px;
+    
+    border: 1px solid #CCCCCC;  
+    
+    padding: 5px;
+    background-color: #FFFFFF;
+}
+
+.menu-message {
+    width: 64px;
+    height: 64px;
+    background-image: url(/img/icons/message.png);
+    background-repeat: no-repeat;
+}
+
+div.cc-form {
+    float: left;
+    margin: 40px;
+}
+
+div.cc-form div.cc-label {
+    width: 200px;
+}
+
+input {
+    width: 300px;
+    background-color: #00FF00;
+}
+
+ul.cc-message-menu {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    
+    margin-bottom: 10px;
+    border-top: 1px solid #3C3C3C;
+}
+
+ul.cc-message-menu li {
+    margin: 0px;
+    
+    padding: 5px 0px;
+    padding-left: 10px;
+    
+    width: 299px;
+    background-color:  #F0F0F0;
+    border-bottom: 1px solid #3C3C3C;
+    
+    font-weight: bold;
+}
+
+ul.cc-message-menu li:hover {
+    background-color:  #E0E0E0;
+    cursor: pointer;
+}

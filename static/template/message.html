@@ -1,0 +1,21 @@
+<div class="cc-message" ng-controller="MessageShowController">
+    <div class="cc-message-body">
+        <div class="cc-message-head">{{msg.contact_name}}</div>
+        <div class="cc-message-content">{{msg.message}}</div>
+    </div>
+    
+    <div class="cc-message-form-head">Response</div>
+    
+    <div class="cc-message-form">
+        <form accept-charset="UTF-8" action="" method="POST">
+            <textarea id="messageBox" name="new_message" placeholder="Type in your message" cols="30" rows="5" style="width: 100%;"></textarea>
+
+            <br><br>
+
+            <!-- chat.sendMessage('messageBox', '{{address}}');{{render 'index'}} -->
+            <button type="button" class="btn btn-default btn-small" onclick="">
+                Answer
+            </button>
+        </form>
+    </div>
+</div>

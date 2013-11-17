@@ -1,0 +1,83 @@
+<script id="template-index" type="text/html">
+<div class="cc-table"></div>
+</script>
+<script id="template-list-messages" type="text/html">
+<div class="cc-row" data-oid="{{msgid}}" data-address="{{address}}" onClick="{{render method='message' id=msgid}}">
+    <span class="source">{{friend}}</span>
+        <span class="subject">
+        <i class="glyphicon glyphicon-paperclip"></i>
+        <strong>Subject (todo)</strong>
+         - {{cut s=message l=50}}
+    </span>
+    <span class="date">{{date}}</span>
+</div>
+</script>
+<script id="template-list-friends" type="text/html">
+    <li data-key="{{key}}">
+    {{name}}
+    <button style="float: right;margin-right: 10px;margin-top: -2px;" onclick="application.render('newMessage', {address: '{{key}}'})">MSG</button>
+    </li>
+</script>
+<script id="template-message" type="text/html">
+<div class="cc-message">
+    <div class="cc-message-body">
+        <div class="cc-message-head">Patrik Strba</div>
+        <div class="cc-message-content">{{message}}</div>
+    </div>
+    
+    <div class="cc-message-form-head">Response</div>
+    
+    <div class="cc-message-form">
+        <form accept-charset="UTF-8" action="" method="POST">
+            <textarea id="messageBox" name="new_message" placeholder="Type in your message" cols="30" rows="5" style="width: 100%;"></textarea>
+
+            <br><br>
+
+            <button type="button" class="btn btn-default btn-small" onclick="chat.sendMessage('messageBox', '{{address}}');{{render 'index'}}">
+                Answer
+            </button>
+        </form>
+    </div>
+</div>
+</script>
+<script id="template-contact" type="text/html">
+    <li data-key="{{key}}">{{name}}</li>
+</script>
+<script id="template-add-contact" type="text/html">
+<div class="cc-form">
+    <div class="cc-label">Address:</div>
+        <div class="cc-input"><input id="inputAddress" type="text" name="form[address]" style="width: 300px"></div>
+    <br class="clear">
+    
+    <button onclick="application.addFriend($('#inputAddress').val())">Add friend</button>
+</div>
+</script>
+<script id="template-new-message" type="text/html">
+<div class="cc-form">
+    <div class="cc-label">Message</div>
+    <div class="cc-input"><textarea id="messageData" cols="80" rows="5"></textarea></div>
+    <br class="clear">
+    
+    <button onclick="application.sendMessage('{{address}}', 'messageData')">Send message</button>
+</div>
+</script>
+<script id="template-setting" type="text/html">
+<div class="cc-form">
+    <div class="cc-label">Message</div>
+    <div class="cc-input"><textarea id="messageData" cols="80" rows="5"></textarea></div>
+    <br class="clear">
+    
+     <div class="cc-label">Message</div>
+    <div class="cc-input"><textarea id="messageData" cols="80" rows="5"></textarea></div>
+    <br class="clear">
+    
+     <div class="cc-label">Message</div>
+    <div class="cc-input"><textarea id="messageData" cols="80" rows="5"></textarea></div>
+    <br class="clear">
+    
+     <div class="cc-label">Message</div>
+    <div class="cc-input"><textarea id="messageData" cols="80" rows="5"></textarea></div>
+    <br class="clear">
+    <button onclick="application.saveSetting()">Send message</button>
+</div>
+</script>
