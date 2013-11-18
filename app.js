@@ -40,10 +40,16 @@ wss.on('connection', function (ws) {
         controller.route(ws.client, p);
     });
 
+    var interval = setInterval(function() {
+        var pack = new Packet(null, config.packet.PACKET_SYSTEM, config.packet.PACKET_SYSTEM_LIVE);
+        client.send(pack);
+    }, config.client.noop * 1000);
+
     ws.on('close', function (code, message) {
         if (ws.client.isLogged()) {
             ws.client.disconnect();
         }
 
+        clearInterval(interval);
     });
 });
