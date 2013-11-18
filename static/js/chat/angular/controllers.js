@@ -326,6 +326,6 @@ chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', function (ws, crypt
         ws.send(pn.toJson());
     });
 
-    ws.connect("wss://server.crycom.net/");
+    ws.connect("ws://server.crycom.net/");
     //ws.connect("ws://localhost:5000/");
 }]);
