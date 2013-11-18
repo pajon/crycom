@@ -216,7 +216,7 @@ chatApp.controller('MessageListController', ['$scope', 'websocket', 'cc-crypt', 
     };
 }]);
 
-chatApp.controller('MessageNewController', ['$scope', 'websocket', '$routeParams', 'cc-contact','cc-gateway', function ($scope, ws, $routeParams, cccontact, gw) {
+chatApp.controller('MessageNewController', ['$scope', 'websocket', '$routeParams', 'cc-contact','cc-gateway', '$location', function ($scope, ws, $routeParams, cccontact, gw, $location) {
     $scope.address = $routeParams.userAddress;
 
     $scope.getUserName = function () {
@@ -225,6 +225,7 @@ chatApp.controller('MessageNewController', ['$scope', 'websocket', '$routeParams
 
     $scope.sendMessage = function () {
         gw.sendMessage($('#messageData').val(), cccontact.getContactByKey(this.address));
+        $location.path('/');
     }
 }]);
 
