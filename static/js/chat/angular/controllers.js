@@ -306,7 +306,7 @@ chatApp.controller('ContactController', ['$scope', 'cc-contact', function ($scop
 }]);
 
 
-chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', function (ws, crypt, ccmsg, cccontact) {
+chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', '$location', function (ws, crypt, ccmsg, cccontact, $location) {
     ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_HASH}, function (packet) {
         var res = crypt.decrypt(bintohex(packet.getData()), "byte");
 
@@ -330,6 +330,10 @@ chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', function (ws, crypt
         // IGNORE THIS
     });
 
-    ws.connect("ws://server.crycom.net/");
-    //ws.connect("ws://localhost:5000/");
+    console.log($location.host());
+
+    if($location.host() === 'localhost')
+        ws.connect("ws://localhost:5000/");
+    else
+        ws.connect("ws://server.crycom.net/");
 }]);
