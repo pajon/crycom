@@ -326,6 +326,6 @@ chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', function (ws, crypt
         ws.send(pn.toJson());
     });
 
-    ws.connect("ws://crycom.herokuapp.com/");
+    ws.connect("wss://crycom.herokuapp.com/");
     //ws.connect("ws://localhost:8000/");
 }]);
