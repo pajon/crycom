@@ -21,6 +21,9 @@ var PACKET_CONTACT_ACCEPT = 3;
 var PACKET_CONTACT_REJECT = 4;
 var PACKET_CONTACT_PUBKEY = 5;
 
+var PACKET_SYSTEM = 8;
+var PACKET_SYSTEM_LIVE = 1;
+
 Packet = function(data, type, subtype) {
     this.type = 'binary';
 
