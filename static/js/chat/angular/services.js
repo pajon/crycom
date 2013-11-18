@@ -456,7 +456,7 @@ serviceModule.factory('cc-msg', ['websocket', 'cc-crypt', 'cc-contact', function
         msg.setKey(hextobin(b64tohex(data.key)));
         msg.setData(hextobin(b64tohex(data.data)));
 
-        msg.setData(msg.decrypt());
+        msg.setData(msg.decrypt(crypt));
 
         Service.addMessage(msg.getId(), msg);
         Service.check();

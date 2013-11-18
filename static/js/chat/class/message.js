@@ -46,8 +46,8 @@ Message.prototype.getKey = function() {
     return this.key;
 };
 
-Message.prototype.decrypt = function() {
-    var keys = chat.decrypt(bintohex(this.getKey()), "byte");
+Message.prototype.decrypt = function(crypt) {
+    var keys = crypt.decrypt(bintohex(this.getKey()), "byte");
 
     var key = CryptoJS.enc.Hex.parse(keys.substr(0, keys.length / 2));
     var iv = CryptoJS.enc.Hex.parse(keys.substr(keys.length / 2));
