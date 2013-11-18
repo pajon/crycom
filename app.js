@@ -15,10 +15,10 @@ var server = http.createServer(app);
 server.listen(port);
 
 
+console.log("LISTENING: %d", port);
+
 // CONNECT TO DATABASE
 db.connect();
-
-var port = process.env.PORT || 8000;
 
 var wss = new WebSocketServer({server: server})
 
