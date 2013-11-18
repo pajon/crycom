@@ -3,6 +3,7 @@ var packet = require('./lib/packet');
 var controller = require('./lib/controller');
 var client = require('./lib/client');
 var db = require('./lib/database');
+var config = require('./lib/config');
 
 var http = require('http')
     , express = require('express')
