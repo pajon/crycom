@@ -91,33 +91,24 @@ function binLength(data) {
     return length;
 }
 
+/*
 $(function () {
-    /*
-     $.ajax({
-     url: "/templates.html",
-     cache: false
-     }).done(function (html) {
-     $("body").before(html);
-
-     chat.loader();
-     });
-     */
     chat.loader();
 });
 
 var chat = {
     init: false,
-    /* KEYS */
+    // KEYS
     pubkey: null,
     privkey: null,
     name: null,
     rsa: null,
-    /* SOURCE ADDRESS */
+    // SOURCE ADDRESS
     srcAddr: new Uint8Array(32),
-    /* CHAT DATA */
+    // CHAT DATA
     friends: {},
     messages: null,
-    /* WEBSOCKET */
+    // WEBSOCKET
     websocket: null,
     loader: function () {
         // ONCE LOAD
@@ -152,8 +143,6 @@ var chat = {
             //this.rsa.setPublic(this.pubkey, "65537");
             //this.rsa.setPrivate(this.pubkey, "65537", this.privkey);
         }
-        */
-        /*
 
         var hash = CryptoJS.SHA256(this.pubkey.toUpperCase()).toString(CryptoJS.enc.Hex);
 
@@ -164,7 +153,7 @@ var chat = {
             this.srcAddr[i] = parseInt(b, 16);
         }
 
-        */
+
 
         //this.messages = messageManager;
     },
@@ -318,7 +307,7 @@ var chat = {
 
             for (i = 0; i < message.length; i++)
                 f[index + i] = message.charCodeAt(i);
-            */
+
             var out = {
                 destination: bintohex(dest),
                 data: message,
@@ -334,3 +323,5 @@ var chat = {
             //this.websocket.send(p.toBinary());
         }
     };
+
+    */
