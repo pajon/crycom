@@ -79,8 +79,6 @@ serviceModule.factory('websocket', [ '$location', function ($location) {
             callEvent('onerror')
             $('#debug').html($('#debug').html() + "ERROR" + "<br>");
         };
-
-        //chat.websocket = websocket;
     };
 
     Service.handlePacket = function (filter, fn) {
@@ -101,6 +99,7 @@ serviceModule.factory('websocket', [ '$location', function ($location) {
     };
 
     Service.send = function (data) {
+        console.log(data);
         websocket.send(data);
     };
 
