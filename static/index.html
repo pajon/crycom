@@ -99,39 +99,5 @@
                 <div ng-view></div>
             </div>
         </div>
-
-        <div class="developer-toogle"><a href="#" onclick="$('.developer').toggle();
-                            $('.developer-toogle').css({bottom: $('.developer').css('display') === 'none' ? '0px' : '149px'});">OPEN/CLOSE</a></div>
-        <div class="developer">
-            <ul style="float: left">       
-                <li><a href="#" onclick="chat.connect('ws://localhost:8000');">Connect Localhost</a></li>
-                <li><a href="#" onclick="chat.connect('ws://94.229.35.149:8000');">Connect djmetla</a></li>
-                <li><a href="#" onclick="chat.login();">Login #1</a></li>
-                <li><a href="#" onclick="chat.loadContacts();">Load friends</a></li>
-                <li><a href="#" onclick="chat.renderFriends();">Render friends</a></li>
-                <li><a href="#" onclick="chat.generateKeys();">KeyGen</a></li>
-                <li><a href="#" onclick="chat.exportKeys();">Export keys</a></li>
-            </ul>
-
-            <div style="float: left">
-                <div id="key"></div>
-                LOG:<br>
-                <div id="debug"></div>
-            </div>
-
-            <div class="cc-form">
-                <form accept-charset="UTF-8" action="" method="POST">
-                    Adresa: <input id="dst" type='text' value='' placeholder='Address' style='width:400px' /><br>
-                    Type: <input id="ptype" type='text' value='0' placeholder='Type' style='width:50px' /><br>
-                    SubType: <input id="psubtype" type='text' value='0' placeholder='Subtype' style='width:50px' /><br>
-
-                    <textarea id="message" name="new_message" placeholder="Type in your message" cols="30" rows="1"></textarea>
-
-                    <button type="button" class="btn btn-default btn-small" onclick="chat.send(hextobin($('#dst').val()));">
-                        Answer
-                    </button>
-                </form>
-            </div>
-        </div>
     </body>
 </html>
