@@ -305,7 +305,7 @@ chatApp.controller('ContactController', ['$scope', 'cc-contact', function ($scop
 }]);
 
 
-chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', function (ws, crypt) {
+chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', function (ws, crypt, ccmsg, cccontact) {
     ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_HASH}, function (packet) {
         var res = crypt.decrypt(bintohex(packet.getData()), "byte");
 
@@ -318,8 +318,7 @@ chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', function (ws, crypt
 
     ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_ACCEPT}, function (packet) {
         // LOAD CONTACTS
-        pn = new Packet(null, PACKET_CONTACT, PACKET_CONTACT_LIST);
-        ws.send(pn.toBinary());
+        cccontact.reload();
 
         // LOAD MESSAGES
         pn = new Packet(null, PACKET_MESSAGE, PACKET_MESSAGE_LIST);

@@ -80,7 +80,7 @@ serviceModule.factory('websocket', [ '$location', function ($location) {
             $('#debug').html($('#debug').html() + "ERROR" + "<br>");
         };
 
-        chat.websocket = websocket;
+        //chat.websocket = websocket;
     };
 
     Service.handlePacket = function (filter, fn) {
@@ -197,7 +197,7 @@ serviceModule.factory('cc-crypt', ['websocket', function (ws) {
     return Service;
 }]);
 
-serviceModule.factory('cc-gateway', ['websocket', function (ws) {
+serviceModule.factory('cc-gateway', ['websocket', 'cc-crypt', function (ws, crypt) {
 
     var Service = {};
 
@@ -217,7 +217,7 @@ serviceModule.factory('cc-gateway', ['websocket', function (ws) {
             destination: bintohex(contact.getAddress()),
             data: message,
             destination_key: contact.encrypt(key.toString() + iv.toString()),
-            source_key: chat.encrypt(key.toString() + iv.toString())
+            source_key: crypt.encrypt(key.toString() + iv.toString())
         });
         ws.send(p.toJson());
     }
@@ -277,6 +277,11 @@ serviceModule.factory('cc-contact', ['websocket', function (ws) {
         return Service.contacts[key];
     }
 
+    Service.reload = function() {
+        pn = new Packet(null, PACKET_CONTACT, PACKET_CONTACT_LIST);
+        ws.send(pn.toBinary());
+    };
+
     ws.handlePacket({type: PACKET_CONTACT, subtype: PACKET_CONTACT_LIST}, function (packet) {
         Service.contacts = {};
 
@@ -295,7 +300,7 @@ serviceModule.factory('cc-contact', ['websocket', function (ws) {
             Service.contacts[contact.key].setAddress(hextobin(contact.key));
 
             // TEMPORALY
-            chat.friends[contact.key] = Service.contacts[contact.key];
+            //chat.friends[contact.key] = Service.contacts[contact.key];
 
             var pack = new Packet(hextobin(contact.key), PACKET_CONTACT, PACKET_CONTACT_PUBKEY);
             ws.send(pack.toBinary());
@@ -308,7 +313,7 @@ serviceModule.factory('cc-contact', ['websocket', function (ws) {
     });
 
     ws.handlePacket({type: PACKET_CONTACT, subtype: PACKET_CONTACT_ACCEPT}, function (packet) {
-        chat.loadContacts();
+        Service.reload();
     });
 
     ws.handlePacket({type: PACKET_CONTACT, subtype: PACKET_CONTACT_PUBKEY}, function (packet) {
@@ -323,13 +328,13 @@ serviceModule.factory('cc-contact', ['websocket', function (ws) {
             pubkey[i - 32] = data[i];
 
 
-        chat.friends[bintohex(key)].setKey(pubkey);
+        Service.contacts[bintohex(key)].setKey(pubkey);
     });
 
     return Service;
 }]);
 
-serviceModule.factory('cc-msg', ['websocket', function (ws) {
+serviceModule.factory('cc-msg', ['websocket', 'cc-crypt', 'cc-contact', function (ws, crypt, contact) {
     var id = 0;
     var Service = {};
 
@@ -408,12 +413,12 @@ serviceModule.factory('cc-msg', ['websocket', function (ws) {
                     fixZero(date.getHours()) + ":" +
                     fixZero(date.getMinutes());
 
-            var addr = (Service.messages[k].getSource() == bintohex(chat.srcAddr) ? Service.messages[k].getDestination() : Service.messages[k].getSource());
+            var addr = (Service.messages[k].getSource() == crypt.getAddress() ? Service.messages[k].getDestination() : Service.messages[k].getSource());
 
             tmp.push({
                 id: k,
                 addr: addr,
-                contact_name: chat.friends[addr].getName(),
+                contact_name: contact.getContactByKey(addr).getName(),
                 message: Service.messages[k].getData(),
                 date: stringDate
             });
@@ -436,7 +441,7 @@ serviceModule.factory('cc-msg', ['websocket', function (ws) {
                 continue;
 
             pn = new Packet(Service.renderMessage[i], PACKET_MESSAGE, PACKET_MESSAGE_GET);
-            chat.websocket.send(pn.toBinary());
+            ws.send(pn.toBinary());
         }
         Service.check();
     });
@@ -464,7 +469,7 @@ serviceModule.factory('cc-msg', ['websocket', function (ws) {
         Service.renderMessage.unshift(packet.getData());
 
         pn = new Packet(packet.getData(), PACKET_MESSAGE, PACKET_MESSAGE_GET);
-        chat.websocket.send(pn.toBinary());
+        ws.send(pn.toBinary());
     });
 
     return Service;
