@@ -173,17 +173,17 @@ var chat = {
         this.loadMessages();
     }, encrypt: function (data) {
         if (this.pubkey === null) {
-            alert("NOT PUBKEY");
+            alert("NOT PUBKEY -1");
             return;
         }
         return this.rsa.encrypt(data);
     },
     decrypt: function (data) {
         if (this.pubkey === null) {
-            alert("NOT PUBKEY");
+            alert("NOT PUBKEY -2");
             return;
         } else if (this.privkey === null) {
-            alert("NOT PRIVKEY");
+            alert("NOT PRIVKEY -3");
             return;
         }
         return this.rsa.decrypt(data);
