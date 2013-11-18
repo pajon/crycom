@@ -63,9 +63,9 @@ var application = {
         pn = new Packet(null, PACKET_CONTACT, PACKET_CONTACT_ADD);
         pn.setData(hextobin(address));
 
-        chat.websocket.send(pn.toBinary());
+        //chat.websocket.send(pn.toBinary());
     }, sendMessage: function(address, message) {
-        chat.sendMessage(message, address);
+        //chat.sendMessage(message, address);
     },
     /* TOOLS */
     clear: function() {
