@@ -99,7 +99,6 @@ serviceModule.factory('websocket', [ '$location', function ($location) {
     };
 
     Service.send = function (data) {
-        console.log(data);
         websocket.send(data);
     };
 
