@@ -93,34 +93,6 @@ chatApp.controller('AppController', ['$scope', 'websocket', 'cc-crypt', '$locati
         } else {
             Service.login();
         }
-
-        /*
-         var pem = crypt.exportPublicPem();
-
-         // REGISTER FIRST TIME
-         if (this.name !== null) {
-         p = new Packet(null, PACKET_AUTH, PACKET_AUTH_REGISTER);
-         p.setData({
-         pem: pem,
-         name: this.name
-         });
-
-         this.websocket.send(p.toJson());
-         }
-
-         var auth = function () {
-         p = new Packet(null, PACKET_AUTH, PACKET_AUTH_START);
-         p.setData(pem);
-
-         chat.websocket.send(p.toBinary());
-         }
-
-         // SO TOO BAD
-         if (this.name !== null)
-         setTimeout(auth, 1000);
-         else
-         auth();
-         */
     });
 
     ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_REGISTER_ACCEPT}, function(packet) {
@@ -195,7 +167,7 @@ chatApp.controller('SettingController', ['$scope', 'websocket', 'cc-crypt', func
 }]);
 
 
-chatApp.controller('MessageListController', ['$scope', 'websocket', 'cc-crypt', function ($scope, ws, crypt) {
+chatApp.controller('MessageListController', ['$scope', 'websocket','$location', 'cc-crypt', function ($scope, ws, $location, crypt) {
 
     $scope.loadReceived = function () {
         var packet = new Packet(null, PACKET_MESSAGE, PACKET_MESSAGE_QUERY);
@@ -204,6 +176,7 @@ chatApp.controller('MessageListController', ['$scope', 'websocket', 'cc-crypt', 
         });
 
         ws.send(packet.toJson());
+        $location.path('/message');
     };
 
     $scope.loadSent = function () {
@@ -213,19 +186,31 @@ chatApp.controller('MessageListController', ['$scope', 'websocket', 'cc-crypt', 
         });
 
         ws.send(packet.toJson());
+        $location.path('/message');
     };
 }]);
 
 chatApp.controller('MessageNewController', ['$scope', 'websocket', '$routeParams', 'cc-contact','cc-gateway', '$location', function ($scope, ws, $routeParams, cccontact, gw, $location) {
-    $scope.address = $routeParams.userAddress;
 
-    $scope.getUserName = function () {
-        return cccontact.getContactByKey(this.address).getName();
-    }
+    var address = $routeParams.userAddress;
+
+    $scope.contact = {
+        address: address,
+        name: null
+    };
 
     $scope.sendMessage = function () {
-        gw.sendMessage($('#messageData').val(), cccontact.getContactByKey(this.address));
+        gw.sendMessage($('#messageData').val(), cccontact.get(address));
         $location.path('/');
+    }
+
+
+    if(cccontact.exists(address)) {
+        $scope.contact.name = cccontact.get(address).getName();
+    } else {
+        cccontact.getAsync(address).then(function() {
+            $scope.contact.name = cccontact.get(address).getName();
+        });
     }
 }]);
 
@@ -272,19 +257,19 @@ chatApp.controller('MessageShowController', ['$scope', '$routeParams', 'cc-msg',
                 fixZero(date.getHours()) + ":" +
                 fixZero(date.getMinutes());
 
-        var addr = (msg.getSource() == bintohex(crypt.getAddress()) ? msg.getDestination() : msg.getSource());
+        var addr = (msg.getSource() == crypt.getAddress() ? msg.getDestination() : msg.getSource());
 
         $scope.msg = {
             id: id,
             address: addr,
-            contact_name: contacts.getContactByKey(addr).getName(),
+            contact_name: contacts.get(addr).getName(),
             message: msg.getData(),
             date: stringDate
         };
     }
 
     $scope.sendMessage = function () {
-        gw.sendMessage($('#messageData').val(), contacts.getContactByKey(this.msg.address));
+        gw.sendMessage($('#messageData').val(), contacts.get(this.msg.address));
         $location.path("/");
     }
 
@@ -322,15 +307,12 @@ chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', '$location', functi
         cccontact.reload();
 
         // LOAD MESSAGES
-        pn = new Packet(null, PACKET_MESSAGE, PACKET_MESSAGE_LIST);
-        ws.send(pn.toJson());
+        ccmsg.reload();
     });
 
     ws.handlePacket({type: PACKET_SYSTEM, subtype: PACKET_SYSTEM_LIVE}, function (packet) {
         // IGNORE THIS
     });
-
-    console.log($location.host());
 
     if($location.host() === 'localhost')
         ws.connect("ws://localhost:5000/");

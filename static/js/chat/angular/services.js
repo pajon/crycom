@@ -223,21 +223,23 @@ serviceModule.factory('cc-gateway', ['websocket', 'cc-crypt', function (ws, cryp
     return Service;
 }]);
 
-serviceModule.factory('cc-contact', ['websocket', function (ws) {
-    var id = 0;
+serviceModule.factory('cc-contact', ['websocket','$q', function (ws, $q) {
+    var callback_id = 0;
+    var callback = new Array();
+    var callback_contact_id = 0;
+    var callback_contact = new Array();
     var Service = {};
 
     var ready = false;
-    var callback = new Array();
     Service.contacts = {};
 
     Service.register = function (cb) {
-        callback[id] = cb;
+        callback[callback_id] = cb;
 
         if (this.isReady())
             Service.fire();
 
-        return id++;
+        return callback_id++;
     };
 
     Service.unregister = function (id) {
@@ -248,6 +250,13 @@ serviceModule.factory('cc-contact', ['websocket', function (ws) {
     Service.fire = function () {
         callback.map(function (item) {
             item();
+        });
+
+        callback_contact.map(function(item, index) {
+            if(Service.exists(item.address)) {
+                item.deffered.resolve(Service.contacts[item.address]);
+                delete callback_contact[index];
+            }
         });
 
         ready = true;
@@ -271,8 +280,25 @@ serviceModule.factory('cc-contact', ['websocket', function (ws) {
         return ready;
     };
 
-    Service.getContactByKey = function (key) {
-        return Service.contacts[key];
+    Service.exists = function(key) {
+        return (Service.contacts[key] !== undefined && typeof Service.contacts[key] === 'object');
+    }
+
+    Service.get = function (key) {
+        if(Service.contacts[key] !== undefined && typeof Service.contacts[key] === 'object')
+            return Service.contacts[key];
+        else
+            return null;
+    }
+
+    Service.getAsync = function (key) {
+        var deferred = $q.defer();
+        callback_contact[callback_contact_id] = {
+            address: key,
+            deffered: deferred
+        };
+
+        return deferred.promise;
     }
 
     Service.reload = function() {
@@ -311,6 +337,10 @@ serviceModule.factory('cc-contact', ['websocket', function (ws) {
     });
 
     ws.handlePacket({type: PACKET_CONTACT, subtype: PACKET_CONTACT_ACCEPT}, function (packet) {
+        Service.reload();
+    });
+
+    ws.handlePacket({type: PACKET_CONTACT, subtype: PACKET_CONTACT_RELOAD}, function (packet) {
         Service.reload();
     });
 
@@ -379,6 +409,11 @@ serviceModule.factory('cc-msg', ['websocket', 'cc-crypt', 'cc-contact', function
         return ready;
     };
 
+    Service.reload = function() {
+        pn = new Packet(null, PACKET_MESSAGE, PACKET_MESSAGE_LIST);
+        ws.send(pn.toJson());
+    }
+
     Service.addMessage = function (id, message) {
         if (this.messages.hasOwnProperty(id)) {
             console.log("[Warning] Message is already in store");
@@ -416,7 +451,7 @@ serviceModule.factory('cc-msg', ['websocket', 'cc-crypt', 'cc-contact', function
             tmp.push({
                 id: k,
                 addr: addr,
-                contact_name: contact.getContactByKey(addr).getName(),
+                contact_name: contact.get(addr).getName(),
                 message: Service.messages[k].getData(),
                 date: stringDate
             });
