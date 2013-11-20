@@ -302,6 +302,16 @@ chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', '$location', functi
         ws.send(tmp.toBinary());
     });
 
+    ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_REJECT}, function (packet) {
+        var data = packet.getData();
+
+        // USER WITH THIS CERTIFICATE DONT EXISTS
+        if(data.error_code === 100) {
+            // TODO: REWORK (example: IMPORT DIALOG)
+            crypt.clean();
+        }
+    });
+
     ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_ACCEPT}, function (packet) {
         // LOAD CONTACTS
         cccontact.reload();
