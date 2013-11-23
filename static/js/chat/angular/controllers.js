@@ -269,7 +269,7 @@ chatApp.controller('MessageShowController', ['$scope', '$routeParams', 'cc-msg',
     }
 
     $scope.sendMessage = function () {
-        gw.sendMessage($('#messageData').val(), contacts.get(this.msg.address));
+        gw.sendMessage($('#messageData').val(), contacts.get(this.msg.address), id);
         $location.path("/");
     }
 

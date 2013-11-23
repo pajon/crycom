@@ -199,8 +199,11 @@ serviceModule.factory('cc-gateway', ['websocket', 'cc-crypt', function (ws, cryp
 
     var Service = {};
 
-    Service.sendMessage = function (data, contact) {
+    Service.sendMessage = function (data, contact, parent) {
         var message = data;
+
+        if(parent === undefined)
+            parent = null;
 
         // GENERATE KEY
         var key = CryptoJS.lib.WordArray.random(32);
@@ -212,6 +215,7 @@ serviceModule.factory('cc-gateway', ['websocket', 'cc-crypt', function (ws, cryp
         var p = new Packet(null, PACKET_MESSAGE, PACKET_MESSAGE);
 
         p.setData({
+            parent: parent,
             destination: bintohex(contact.getAddress()),
             data: message,
             destination_key: contact.encrypt(key.toString() + iv.toString()),
