@@ -110,6 +110,8 @@ chatApp.controller('AppController', ['$scope', 'websocket', 'cc-crypt', '$locati
 
 chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', '$location', function ($scope, ws, crypt, $location) {
 
+    var canSend = true;
+
     if(crypt.validCert())
         $location.path('/');
 
@@ -121,6 +123,10 @@ chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', '$l
     }
 
     $scope.register = function(user) {
+        if(canSend === false)
+            return;
+        canSend = false;
+
         crypt.generate(2048, true);
 
         p = new Packet(null, PACKET_AUTH, PACKET_AUTH_REGISTER);
@@ -318,7 +324,14 @@ chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', '$location', functi
         cccontact.reload();
 
         // LOAD MESSAGES
-        ccmsg.reload();
+        var packet = new Packet(null, PACKET_MESSAGE, PACKET_MESSAGE_QUERY);
+        packet.setData({
+            source: null
+        });
+
+        ws.send(packet.toJson());
+
+        //ccmsg.reload();
     });
 
     ws.handlePacket({type: PACKET_SYSTEM, subtype: PACKET_SYSTEM_LIVE}, function (packet) {
