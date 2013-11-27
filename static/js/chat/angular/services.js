@@ -413,10 +413,12 @@ serviceModule.factory('cc-msg', ['websocket', 'cc-crypt', 'cc-contact', function
         return ready;
     };
 
+    /*
     Service.reload = function() {
         pn = new Packet(null, PACKET_MESSAGE, PACKET_MESSAGE_LIST);
         ws.send(pn.toJson());
     }
+    */
 
     Service.addMessage = function (id, message) {
         if (this.messages.hasOwnProperty(id)) {

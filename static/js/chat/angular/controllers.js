@@ -177,6 +177,7 @@ chatApp.controller('MessageListController', ['$scope', 'websocket','$location', 
 
         ws.send(packet.toJson());
         $location.path('/message');
+        console.log("INCOMING")
     };
 
     $scope.loadSent = function () {
