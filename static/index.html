@@ -53,11 +53,13 @@
     <div class="cc-navbar">
         <ul class="nav nav-pills">
             <li class="active" ng-click="activeHead($event)"><a href="#/message">Mail</a></li>
-            <li><a href="#" ng-click="activeHead($event)"s>Storage</a></li>
+            <!-- <li><a href="#" ng-click="activeHead($event)" s>Storage</a></li> -->
             <li><a href="#/setting" ng-click="activeHead($event)">Settings</a></li>
+            <li><a href="#/contact/add" ng-click="activeHead($event)">Add contact</a></li>
         </ul>
     </div>
 
+    <!--
     <div class="btn-group pull-right">
         <button type="button" class="btn btn-danger btn-default btn-small">
             Logout
@@ -69,10 +71,61 @@
             Add friend
         </button>
     </div>
+    -->
 </header>
 
 
 <div id="content">
+    <div class="row">
+        <div class="cc-panel col-xs-12 col-sm-2 col-md-2">
+            <div style="margin-left: 15px;">
+                <div class="list-group message-list" ng-controller="MessageListController">
+                    <a href="#" class="message-received list-group-item active" ng-click="loadReceived()">Received
+                        messages</a>
+                    <a href="#" class="message-sent list-group-item" ng-click="loadSent()">Sent messages</a>
+                </div>
+
+
+                <span class="cc-panel-head">Contacts:</span>
+
+                <div class="list-group" ng-controller="ContactController">
+                    <a href="javascript:void(0);" ng-repeat="contact in contacts" class="list-group-item" data-key="{{contact.key}}">
+                        <div class="pull-right" style="margin-top: 3px;">
+                            <i class="glyphicon glyphicon-comment cc-glyphicon-hover" click-link="/message/new/{{contact.key}}" title="new message"></i>
+                        </div>
+                        {{contact.name}}
+
+                    </a>
+                    <li class="list-group-item" ng-hide="contacts.length">No items found</li>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="cc-content col-xs-12 col-sm-10 col-md-10">
+            <div style="margin-right: 15px;">
+                <div ng-view></div>
+            </div>
+
+            <!--
+            <div class="row" style="margin-right: 15px;">
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="panel">
+                        <div ng-view></div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="panel">
+                        <div ng-view></div>
+                    </div>
+                </div>
+            </div>
+            -->
+
+        </div>
+    </div>
+
+    <!--
     <div class="cc-panel">
 
         <div class="list-group message-list" ng-controller="MessageListController">
@@ -84,7 +137,7 @@
         <span class="cc-panel-head">Contacts:</span>
 
         <div class="list-group" ng-controller="ContactController">
-            <a href="#" ng-repeat="contact in contacts" class="list-group-item" data-key="{{contact.key}}">
+            <a href="javascript:void(0);" ng-repeat="contact in contacts" class="list-group-item" data-key="{{contact.key}}">
                 <div class="pull-right" style="margin-top: 3px;">
                     <i class="glyphicon glyphicon-comment cc-glyphicon-hover" click-link="/message/new/{{contact.key}}" title="new message"></i>
                 </div>
@@ -101,6 +154,7 @@
         </div>
 
     </div>
+    -->
 </div>
 </body>
 </html>

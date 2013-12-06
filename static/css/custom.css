@@ -62,26 +62,6 @@ header span.logo {
     overflow: hidden;
 }
 
-.cc-panel {
-    height: 100%;
-
-    margin-left: 15px;
-    width: 300px;
-    float: left;
-}
-
-.cc-content {
-    margin-left: 330px;
-    margin-right: 15px;
-    float: none;
-    
-    height: 100%; 
-    padding-bottom: 60px;
-    background-color: #FFFFFF;
-    
-    overflow: auto;
-}
-
 #content.cc-onepage .cc-panel {
     display: none;
 }
@@ -89,18 +69,6 @@ header span.logo {
 #content.cc-onepage .cc-content {
     width: 100%;
     margin-left: 0px;
-
-}
-
-
-.cc-panel .cc-panel-head {
-    display: block;
-   
-    padding-left: 15px;
-    
-    margin-top: 10px;
-    font-size: 20px;
-    font-weight: bold;
 }
 
 div.cc-window {
@@ -202,7 +170,6 @@ div.cc-form div.cc-label {
 
 input{
     width: 300px;
-    background-color: #00FF00;
 }
 
 ul.cc-message-menu {

@@ -22,6 +22,10 @@ chatApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'template/setting.html',
             controller: 'SettingController'
         })
+        .when('/contact/add', {
+            templateUrl: 'template/contact/add.html',
+            controller: 'ContactAddController'
+        })
         .otherwise({
             redirectTo: '/message'
         });
@@ -53,12 +57,8 @@ chatApp.controller('AppController', ['$scope', 'websocket', 'cc-crypt', '$locati
 
 
     $scope.activeHead = function($event) {
-        console.log($event);
-
         $(".cc-navbar li").removeClass("active");
-        $($event.target).addClass("active");
-
-
+        $($event.target.parentElement).addClass("active");
     };
 
 
@@ -187,8 +187,8 @@ chatApp.controller('SettingController', ['$scope', 'websocket', 'cc-crypt', func
             crypt.clean();
     }
 
-    // DEBUG KEY
-    $("#key").text(crypt.getAddress());
+    console.log(crypt.getAddress());
+    $scope.address = crypt.getAddress();
 }]);
 
 
@@ -320,6 +320,20 @@ chatApp.controller('ContactController', ['$scope', 'cc-contact', function ($scop
     $scope.$on('$destroy', function iVeBeenDismissed() {
         cccontact.unregister($scope.cbid);
     });
+}]);
+
+chatApp.controller('ContactAddController', ['$scope', 'websocket', function ($scope, ws) {
+    $scope.contacts = [];
+
+    $scope.register = function (address) {
+
+        var pn = new Packet(null, PACKET_CONTACT, PACKET_CONTACT_ADD);
+        pn.setData({
+            address: address
+        });
+
+        ws.send(pn.toJson());
+    };
 }]);
 
 
