@@ -1,82 +1,60 @@
-.developer {
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    height: 150px;
-    border-top: 1px solid #000000;
-    background-color: #EEE;
-    
-    display: none;
-}
-
-.developer-toogle {
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    border: 1px solid #000000;
-}
-
 body, html {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    background-color: #FFFFFF;
 }
 
 header {
     width: 100%;
+    height: 40px;
     
-    height: 60px;
-    
-    background-color: #F2F2F2;
+    background-color: #FFFFFF;
+}
+
+header .btn-group {
+    margin: 5px 15px 0px 0px;
 }
 
 header span.logo {
-    color: #6D99BF;
-    background-color: #3C3C3C;
+    /* color: #6D99BF; */
+    /*color: white; */
+    /* background-color: #525252; */
     display: inline-block;
-    width: 300px;
-    height: 60px;
+    width: 330px;
+    height: 40px;
     overflow: hidden;
     float: left;
-    text-align: center;
+
+    padding-left: 30px;
+    padding-top: 3px;
     
-    padding-top: 10px;
-    
-    font-size: 28px;
+    font-size: 24px;
+
+    color: black;
+    font-family: Arial;
 }
 
 .clear { clear: both; }
 
 
-.navbar {
-    z-index: 20;
-    margin: 0;
+.cc-navbar {
     display: inline-block;
     float: left;
-    
-    padding: 0px;
 }
 
-.navbar > ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+.cc-navbar .nav li {
+
+    margin: 0px 5px;
 }
 
-.navbar > ul > li {
-    padding: 0px;
-    margin: 0px;
-    
-    background-color: #F2F2F2;
-}
-
-.navbar > ul > li > a {
-    display: block;
-    padding:  20px 40px;
+.cc-navbar .nav li a {
+    margin-top: 4px;
+    padding: 6px 10px;
 }
 
 #content {
+    padding-top: 15px;
     height: 100%;
     width: 100%;
 
@@ -86,19 +64,20 @@ header span.logo {
 
 .cc-panel {
     height: 100%;
-    
+
+    margin-left: 15px;
     width: 300px;
     float: left;
-    border-right: 1px solid #3C3C3C;
 }
 
 .cc-content {
-    margin-left: 300px;
+    margin-left: 330px;
+    margin-right: 15px;
     float: none;
     
     height: 100%; 
     padding-bottom: 60px;
-    background-color: #F6F6F6;
+    background-color: #FFFFFF;
     
     overflow: auto;
 }
@@ -117,34 +96,11 @@ header span.logo {
 .cc-panel .cc-panel-head {
     display: block;
    
-    padding-left: 5px;
+    padding-left: 15px;
     
     margin-top: 10px;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
-}
-
-ul.cc-friend-list {
-    list-style-type: none;
-    padding: 0px;
-    margin: 0px;
-    border-top: 1px solid #3C3C3C;
-
-}
-ul.cc-friend-list > li {
-    margin: 0px;
-    
-    padding: 10px 0px;
-    padding-left: 10px;
-    
-    width: 299px;
-    background-color:  #F0F0F0;
-    border-bottom: 1px solid #3C3C3C;
-}
-
-ul.cc-friend-list > li:hover {
-    background-color:  #E0E0E0;
-    cursor: pointer;
 }
 
 div.cc-window {
@@ -156,7 +112,6 @@ div.cc-window {
 
 div.cc-table {
     width: 100%;
-    height:400px;
     overflow: auto;
 }
 
@@ -172,7 +127,7 @@ div.cc-row {
 }
 
 div.cc-row:hover {
-    background-color: #F0F0F0;
+    background-color: #FAFAFA;
     cursor: pointer;
 }
 div.cc-row span {
@@ -283,4 +238,18 @@ ul.cc-message-menu li:hover {
 
 .register-form {
     padding-top: 50px;
+}
+
+.register-form label {
+     margin-top: 6px;
+
+ }
+
+.register-form label:after {
+    content: ":";
+}
+
+.cc-glyphicon-hover:hover {
+    opacity: 0.5;
+    cursor: pointer;
 }

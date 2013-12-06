@@ -52,6 +52,16 @@ chatApp.directive('clickLink', ['$location', function ($location) {
 chatApp.controller('AppController', ['$scope', 'websocket', 'cc-crypt', '$location', function ($scope, ws, crypt, $location) {
 
 
+    $scope.activeHead = function($event) {
+        console.log($event);
+
+        $(".cc-navbar li").removeClass("active");
+        $($event.target).addClass("active");
+
+
+    };
+
+
     var Service = {};
 
     Service.hidePanel = function () {
@@ -106,28 +116,32 @@ chatApp.controller('AppController', ['$scope', 'websocket', 'cc-crypt', '$locati
         alert("ERROR:" + packet.getData());
     });
 
+
+
 }]);
 
-chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', '$location', function ($scope, ws, crypt, $location) {
+chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', 'cc-notification', '$location', function ($scope, ws, crypt, notification, $location) {
 
-    var canSend = true;
+    $scope.isBlocked = false;
 
     if(crypt.validCert())
         $location.path('/');
 
+
     $scope.user = {
         name: "",
         surname: "",
-        email: "",
-        password: ""
+        email: ""
     }
 
     $scope.register = function(user) {
-        if(canSend === false)
-            return;
-        canSend = false;
+        $scope.isBlocked = true;
+
+        notification.start();
 
         crypt.generate(2048, true);
+
+        notification.stop();
 
         p = new Packet(null, PACKET_AUTH, PACKET_AUTH_REGISTER);
         p.setData({
@@ -137,6 +151,11 @@ chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', '$l
         });
         ws.send(p.toJson());
     };
+
+    $scope.reset = function() {
+        for(var k in this.user)
+            $scope.user[k] = "";
+    }
 }]);
 
 chatApp.controller('SettingController', ['$scope', 'websocket', 'cc-crypt', function ($scope, ws, crypt) {
@@ -184,6 +203,9 @@ chatApp.controller('MessageListController', ['$scope', 'websocket','$location', 
         ws.send(packet.toJson());
         $location.path('/message');
         console.log("INCOMING")
+
+        $(".message-list a").removeClass("active");
+        $(".message-received").addClass("active");
     };
 
     $scope.loadSent = function () {
@@ -194,6 +216,9 @@ chatApp.controller('MessageListController', ['$scope', 'websocket','$location', 
 
         ws.send(packet.toJson());
         $location.path('/message');
+
+        $(".message-list a").removeClass("active");
+        $(".message-sent").addClass("active");
     };
 }]);
 
