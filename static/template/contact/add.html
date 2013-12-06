@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-xs-2 col-sm-1 col-md-1 text-right">
+        <label>Address:</label>
+    </div>
+    <div class="col-xs-12 col-sm-5 col-md-5">
+        <input type="text" style="width: 100%;" maxlength="64" ng-model="address">
+    </div>
+    <div class="col-xs-12 col-sm-3 col-md-3" style="margin-top: 2px;">
+        You must enter full address (64 chars)
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-xs-3 col-sm-2 col-md-2 col-offset-1">
+        <button class="btn btn-lg btn-primary btn-block" ng-click="register(address)" ng-disabled="address.length != 64">
+            Add contact
+        </button>
+    </div>
+</div>
