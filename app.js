@@ -11,7 +11,17 @@ var express = require('express')
 var app = express()
 var port = process.env.PORT || 8000;
 
+app.get('/*', function(req, res, next) {
+    if (req.headers.host.match(/^www/) !== null ) {
+        res.redirect('http://' + req.headers.host.replace(/^www\./, '') + req.url);
+    } else {
+        next();
+    }
+})
+
 app.use(express.static(__dirname + '/static'));
+
+
 
 var srv = http.createServer(app);
 srv.listen(port);
