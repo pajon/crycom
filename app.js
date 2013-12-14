@@ -18,7 +18,7 @@ app.use(function(req, res, next){
         host = hostarr[0];
     } else
         host = hostarr;
-    
+
 
     if (host.match(/^app.crycom.(loc|net)$/) === null) {
         if(host.match(/crycom.(loc|net)$/) === null)
