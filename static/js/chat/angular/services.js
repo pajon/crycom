@@ -341,6 +341,7 @@ serviceModule.factory('cc-contact', ['websocket','$q', function (ws, $q) {
     });
 
     ws.handlePacket({type: PACKET_CONTACT, subtype: PACKET_CONTACT_ACCEPT}, function (packet) {
+        $.notify("Contact was successfully added !!", "success");
         Service.reload();
     });
 

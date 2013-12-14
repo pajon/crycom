@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
 
     <script type="text/javascript" src="/js/extern/jquery.js"></script>
+    <script type="text/javascript" src="/js/extern/notify.js"></script>
     <script type="text/javascript" src="/js/extern/jsbn.js"></script>
     <script type="text/javascript" src="/js/extern/jsbn2.js"></script>
     <script type="text/javascript" src="/js/extern/prng4.js"></script>
@@ -105,57 +106,11 @@
 
         <div class="cc-content col-xs-12 col-sm-10 col-md-10">
             <div style="margin-right: 15px;">
+                <div class="notify"></div>
                 <div ng-view></div>
             </div>
-
-            <!--
-            <div class="row" style="margin-right: 15px;">
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="panel">
-                        <div ng-view></div>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="panel">
-                        <div ng-view></div>
-                    </div>
-                </div>
-            </div>
-            -->
-
         </div>
     </div>
-
-    <!--
-    <div class="cc-panel">
-
-        <div class="list-group message-list" ng-controller="MessageListController">
-            <a href="#" class="message-received list-group-item active" ng-click="loadReceived()">Received messages</a>
-            <a href="#" class="message-sent list-group-item" ng-click="loadSent()">Sent messages</a>
-        </div>
-
-
-        <span class="cc-panel-head">Contacts:</span>
-
-        <div class="list-group" ng-controller="ContactController">
-            <a href="javascript:void(0);" ng-repeat="contact in contacts" class="list-group-item" data-key="{{contact.key}}">
-                <div class="pull-right" style="margin-top: 3px;">
-                    <i class="glyphicon glyphicon-comment cc-glyphicon-hover" click-link="/message/new/{{contact.key}}" title="new message"></i>
-                </div>
-                {{contact.name}}
-
-            </a>
-            <li class="list-group-item" ng-hide="contacts.length">No items found</li>
-        </div>
-    </div>
-
-    <div class="cc-content">
-        <div class="panel">
-            <div ng-view></div>
-        </div>
-
-    </div>
-    -->
 </div>
 </body>
 </html>
