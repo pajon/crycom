@@ -25,7 +25,7 @@ var PACKET_CONTACT_RELOAD = 6;
 var PACKET_SYSTEM = 8;
 var PACKET_SYSTEM_LIVE = 1;
 
-Packet = function(data, type, subtype) {
+Packet = function (data, type, subtype) {
     this.type = 'binary';
 
     this.values = {
@@ -36,8 +36,12 @@ Packet = function(data, type, subtype) {
 
     // DATA ONLY SET
     if (data !== undefined && data !== null && type === undefined && subtype === undefined) {
-        if (typeof data === 'string') {
-            var json = $.parseJSON(data);
+        if (typeof data === 'string' || typeof data === 'object') {
+            var json = null;
+            if (typeof data === 'string')
+                json = $.parseJSON(data);
+            else
+                json = data;
 
             if (typeof(json.type) !== 'number')
                 return alert("Type must be number!");
@@ -75,11 +79,11 @@ Packet = function(data, type, subtype) {
         this.setSubType(subtype);
 };
 
-Packet.prototype.isBinary = function() {
+Packet.prototype.isBinary = function () {
     return this.type === 'binary';
 };
 
-Packet.prototype.hasError = function() {
+Packet.prototype.hasError = function () {
     if (this.isBinary() === false) {
         if (this.values.hasOwnProperty('ok'))
             return this.values.ok === 0;
@@ -89,7 +93,7 @@ Packet.prototype.hasError = function() {
     return null;
 };
 
-Packet.prototype.setData = function(data) {
+Packet.prototype.setData = function (data) {
     if (this.packet === null) {
         console.log("PACKET IS NULL!");
         return null;
@@ -99,15 +103,15 @@ Packet.prototype.setData = function(data) {
     return this;
 };
 
-Packet.prototype.getData = function() {
+Packet.prototype.getData = function () {
     return this.values.data;
 };
 
-Packet.prototype.getType = function() {
+Packet.prototype.getType = function () {
     return this.values.type;
 };
 
-Packet.prototype.setType = function(type) {
+Packet.prototype.setType = function (type) {
     if (typeof(type) !== 'number')
         return alert("Type must be number!");
 
@@ -116,11 +120,11 @@ Packet.prototype.setType = function(type) {
     return this;
 };
 
-Packet.prototype.getSubType = function() {
+Packet.prototype.getSubType = function () {
     return this.values.subtype;
 };
 
-Packet.prototype.setSubType = function(type) {
+Packet.prototype.setSubType = function (type) {
     if (typeof(type) !== 'number')
         return alert("Type must be number!");
 
@@ -128,11 +132,11 @@ Packet.prototype.setSubType = function(type) {
     return this;
 };
 
-Packet.prototype.toJson = function() {
+Packet.prototype.toJson = function () {
     return $.toJSON(this.values);
 };
 
-Packet.prototype.toBinary = function() {
+Packet.prototype.toBinary = function () {
     var output = new Buffer(2 + this.values.data.length);
     output[0] = this.values.type;
     output[1] = this.values.subtype;
