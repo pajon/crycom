@@ -36,7 +36,7 @@ Packet = function (data, type, subtype) {
 
     // DATA ONLY SET
     if (data !== undefined && data !== null && type === undefined && subtype === undefined) {
-        if (typeof data === 'string' || typeof data === 'object') {
+        if (typeof data === 'string') {
             var json = null;
             if (typeof data === 'string')
                 json = $.parseJSON(data);
