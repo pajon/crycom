@@ -119,7 +119,7 @@ chatApp.controller('AppController', ['$scope', 'websocket', 'cc-crypt', '$locati
 
 }]);
 
-chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', 'cc-notification', '$location', function ($scope, ws, crypt, notification, $location) {
+chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', '$location', function ($scope, ws, crypt, $location) {
 
     $scope.isBlocked = false;
 
@@ -135,11 +135,11 @@ chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', 'cc
     $scope.register = function (user) {
         $scope.isBlocked = true;
 
-        notification.start();
+        $.notify("Generating certificate!", "info");
+
 
         crypt.generate(2048, true);
 
-        notification.stop();
 
         p = new Packet(null, PACKET_AUTH, PACKET_AUTH_REGISTER);
         p.setData({
