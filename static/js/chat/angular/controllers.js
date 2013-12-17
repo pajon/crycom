@@ -56,7 +56,7 @@ chatApp.directive('clickLink', ['$location', function ($location) {
 chatApp.controller('AppController', ['$scope', 'websocket', 'cc-crypt', '$location', function ($scope, ws, crypt, $location) {
 
 
-    $scope.activeHead = function($event) {
+    $scope.activeHead = function ($event) {
         $(".cc-navbar li").removeClass("active");
         $($event.target.parentElement).addClass("active");
     };
@@ -81,7 +81,7 @@ chatApp.controller('AppController', ['$scope', 'websocket', 'cc-crypt', '$locati
     };
 
 
-    Service.login = function() {
+    Service.login = function () {
         p = new Packet(null, PACKET_AUTH, PACKET_AUTH_START);
         p.setData({
             public_key: crypt.exportPublicPem()
@@ -105,17 +105,16 @@ chatApp.controller('AppController', ['$scope', 'websocket', 'cc-crypt', '$locati
         }
     });
 
-    ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_REGISTER_ACCEPT}, function(packet) {
+    ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_REGISTER_ACCEPT}, function (packet) {
         Service.login();
         $location.path('/');
         Service.showHeader();
         Service.showPanel();
     });
 
-    ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_REGISTER_REJECT}, function(packet) {
+    ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_REGISTER_REJECT}, function (packet) {
         alert("ERROR:" + packet.getData());
     });
-
 
 
 }]);
@@ -124,17 +123,16 @@ chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', 'cc
 
     $scope.isBlocked = false;
 
-    if(crypt.validCert())
+    if (crypt.validCert())
         $location.path('/');
 
 
     $scope.user = {
-        name: "",
-        surname: "",
+        username: "",
         email: ""
     }
 
-    $scope.register = function(user) {
+    $scope.register = function (user) {
         $scope.isBlocked = true;
 
         notification.start();
@@ -146,14 +144,14 @@ chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', 'cc
         p = new Packet(null, PACKET_AUTH, PACKET_AUTH_REGISTER);
         p.setData({
             pem: crypt.exportPublicPem(),
-            name: user.name + " " + user.surname,
+            name: user.username,
             email: user.email
         });
         ws.send(p.toJson());
     };
 
-    $scope.reset = function() {
-        for(var k in this.user)
+    $scope.reset = function () {
+        for (var k in this.user)
             $scope.user[k] = "";
     }
 }]);
@@ -187,12 +185,11 @@ chatApp.controller('SettingController', ['$scope', 'websocket', 'cc-crypt', func
             crypt.clean();
     }
 
-    console.log(crypt.getAddress());
-    $scope.address = crypt.getAddress();
+    $scope.address = hex2b64(crypt.getAddress());
 }]);
 
 
-chatApp.controller('MessageListController', ['$scope', 'websocket','$location', 'cc-crypt', function ($scope, ws, $location, crypt) {
+chatApp.controller('MessageListController', ['$scope', 'websocket', '$location', 'cc-crypt', function ($scope, ws, $location, crypt) {
 
     $scope.loadReceived = function () {
         var packet = new Packet(null, PACKET_MESSAGE, PACKET_MESSAGE_QUERY);
@@ -222,7 +219,7 @@ chatApp.controller('MessageListController', ['$scope', 'websocket','$location', 
     };
 }]);
 
-chatApp.controller('MessageNewController', ['$scope', 'websocket', '$routeParams', 'cc-contact','cc-gateway', '$location', function ($scope, ws, $routeParams, cccontact, gw, $location) {
+chatApp.controller('MessageNewController', ['$scope', 'websocket', '$routeParams', 'cc-contact', 'cc-gateway', '$location', function ($scope, ws, $routeParams, cccontact, gw, $location) {
 
     var address = $routeParams.userAddress;
 
@@ -237,13 +234,9 @@ chatApp.controller('MessageNewController', ['$scope', 'websocket', '$routeParams
     }
 
 
-    if(cccontact.exists(address)) {
+    cccontact.getAsync(address, function () {
         $scope.contact.name = cccontact.get(address).getName();
-    } else {
-        cccontact.getAsync(address).then(function() {
-            $scope.contact.name = cccontact.get(address).getName();
-        });
-    }
+    });
 }]);
 
 chatApp.controller('MessageController', ['$scope', 'cc-msg', function ($scope, ccmsg) {
@@ -326,6 +319,14 @@ chatApp.controller('ContactAddController', ['$scope', 'websocket', function ($sc
     $scope.contacts = [];
 
     $scope.register = function (address) {
+        // 44 - Base64, 64 - Hex
+        if (address.length != 44 && address.length != 64)
+            return;
+
+        // Convert Base64 to Hex
+        if (address.length == 44) {
+            address = b64tohex(address);
+        }
 
         var pn = new Packet(null, PACKET_CONTACT, PACKET_CONTACT_ADD);
         pn.setData({
@@ -337,7 +338,7 @@ chatApp.controller('ContactAddController', ['$scope', 'websocket', function ($sc
 }]);
 
 
-chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', '$location', function (ws, crypt, ccmsg, cccontact, $location) {
+chatApp.run(['websocket', 'cc-crypt', 'cc-msg', 'cc-contact', '$location', function (ws, crypt, ccmsg, cccontact, $location) {
     ws.handlePacket({type: PACKET_AUTH, subtype: PACKET_AUTH_HASH}, function (packet) {
         var res = crypt.decrypt(bintohex(packet.getData()), "byte");
 
@@ -352,7 +353,7 @@ chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', '$location', functi
         var data = packet.getData();
 
         // USER WITH THIS CERTIFICATE DONT EXISTS
-        if(data.error_code === 100) {
+        if (data.error_code === 100) {
             // TODO: REWORK (example: IMPORT DIALOG)
             crypt.clean();
         }
@@ -377,7 +378,7 @@ chatApp.run(['websocket','cc-crypt', 'cc-msg', 'cc-contact', '$location', functi
         // IGNORE THIS
     });
 
-    if($location.host() === 'localhost')
+    if ($location.host() === 'app.crycom.loc')
         ws.connect("ws://localhost:5000/");
     else
         ws.connect("ws://server.crycom.net/");

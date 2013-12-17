@@ -50,30 +50,21 @@
 
 <body ng-controller="AppController">
 <header>
-    <a href="/"><span class="logo">Crycom</span></a>
-
-    <div class="cc-navbar">
-        <ul class="nav nav-pills">
-            <li class="active" ng-click="activeHead($event)"><a href="#/message">Mail</a></li>
-            <!-- <li><a href="#" ng-click="activeHead($event)" s>Storage</a></li> -->
-            <li><a href="#/setting" ng-click="activeHead($event)">Settings</a></li>
-            <li><a href="#/contact/add" ng-click="activeHead($event)">Add contact</a></li>
-        </ul>
+    <div class="row">
+        <div class="col-xs-12 col-sm-2 col-md-2">
+            <a href="/"><span class="logo">Crycom</span></a>
+        </div>
+        <div class="cc-content col-xs-12 col-sm-10 col-md-10">
+            <div class="cc-navbar">
+                <ul class="nav nav-pills">
+                    <li class="active" ng-click="activeHead($event)"><a href="#/message">Mail</a></li>
+                    <!-- <li><a href="#" ng-click="activeHead($event)" s>Storage</a></li> -->
+                    <li><a href="#/setting" ng-click="activeHead($event)">Settings</a></li>
+                    <li><a href="#/contact/add" ng-click="activeHead($event)">Add contact</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-    <!--
-    <div class="btn-group pull-right">
-        <button type="button" class="btn btn-danger btn-default btn-small">
-            Logout
-        </button>
-    </div>
-
-    <div class="btn-group pull-right">
-        <button type="button" class="btn btn-info btn-default btn-small" onclick="application.render('addContact');">
-            Add friend
-        </button>
-    </div>
-    -->
 </header>
 
 
@@ -98,7 +89,8 @@
                         {{contact.name}}
 
                     </a>
-                    <li class="list-group-item text-center" ng-hide="contacts.length">No contacts found. <br><br>Add new contact <a href="#/contact/add">here</a></li>
+                    <li class="list-group-item text-center" ng-hide="contacts.length">No contacts found. <br><br>Add new
+                        contact <a href="#/contact/add">here</a></li>
                 </div>
             </div>
 

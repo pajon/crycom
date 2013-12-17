@@ -1,38 +1,46 @@
-<div class="row">
-    <div class="col-xs-12 col-sm-1 col-md-1 text-right">Address:</div>
-    <div class="col-xs-12 col-sm-6 col-md-6">{{address}}</div>
-</div>
-
-<br>
-
-<div class="row">
-    <div class="col-xs-12 col-sm-1 col-md-1 text-right">Certificate:</div>
-    <div class="col-xs-12 col-sm-6 col-md-6">
-        <button type="button" class="btn btn-warning btn-default btn-small" ng-click="exportCertificate()">
-            Export certificate
-        </button>
+<div class="panel">
+    <div class="row">
+        <div class="col-xs-12 col-sm-1 col-md-1 text-right">Address:</div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <input type="text" value="{{address}}" style="width: 100%" readonly="readonly" onclick="this.select();"></div>
     </div>
-</div>
 
-<br>
+    <br>
 
-<div class="row">
-    <div class="col-xs-12 col-sm-1 col-md-1 text-right"></div>
-    <div class="col-xs-12 col-sm-6 col-md-6">
-        <input id="certFile" type="file">
-        <button type="button" class="btn btn-warning btn-default btn-small" ng-click="importCertificate('certFile')">
-            Import certificate
-        </button>
+    <div class="panel">
+
+
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-1 col-md-1 text-right">Certificate:</div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <button type="button" class="btn btn-default btn-default btn-small" ng-click="exportCertificate()">
+                Export certificate
+            </button>
+        </div>
     </div>
-</div>
 
-<br>
+    <br>
 
-<div class="row">
-    <div class="col-xs-12 col-sm-1 col-md-1 text-right"></div>
-    <div class="col-xs-12 col-sm-6 col-md-6">
-        <button type="button" class="btn btn-danger btn-default btn-small" ng-click="deleteCertificate()">
-            Delete certificate
-        </button>
+    <div class="row">
+        <div class="col-xs-12 col-sm-1 col-md-1 text-right"></div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <input id="certFile" type="file">
+            <button type="button" class="btn btn-warning btn-default btn-small" ng-click="importCertificate('certFile')">
+                Import certificate
+            </button>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-1 col-md-1 text-right"></div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <button type="button" class="btn btn-danger btn-default btn-small" ng-click="deleteCertificate()">
+                Delete certificate
+            </button>
+        </div>
+    </div>
     </div>
 </div>

@@ -3,6 +3,7 @@ var serviceModule = angular.module('service', ['ngRoute']);
 serviceModule.factory('websocket', [ '$location', function ($location) {
     var Service = {};
 
+    // WEBSOCKET
     var websocket = null;
 
     var callbacks = {};
@@ -40,9 +41,6 @@ serviceModule.factory('websocket', [ '$location', function ($location) {
         websocket.binaryType = 'arraybuffer';
 
         websocket.onopen = function (e) {
-            // LOGIN
-            //chat.login();
-
             callEvent('onopen')
             console.log("CONNECT");
         };
@@ -123,9 +121,8 @@ serviceModule.factory('cc-crypt', ['websocket', function (ws) {
         if (bit_length === undefined || [2048, 4096].indexOf(bit_length) === -1)
             bit_length = 2048;
 
-
         rsa.generate(bit_length, "65537");
-        if(save === true)
+        if (save === true)
             $.jStorage.set("cert", rsa.privatePEM());
 
         certLoad = true;
@@ -149,6 +146,16 @@ serviceModule.factory('cc-crypt', ['websocket', function (ws) {
             return null;
         }
         return rsa.decrypt(data, type);
+    };
+
+    Service.sign = function (data) {
+        console.log("NEW SIGN: ");
+        console.log(rsa.verifyString(data, rsa.signString(data)));
+        return rsa.signString(data);
+    };
+
+    Service.verify = function (data, sign) {
+        return rsa.verifyHexSignatureForMessage(sign, data);
     };
 
     Service.getAddress = function () {
@@ -202,7 +209,7 @@ serviceModule.factory('cc-gateway', ['websocket', 'cc-crypt', function (ws, cryp
     Service.sendMessage = function (data, contact, parent) {
         var message = data;
 
-        if(parent === undefined)
+        if (parent === undefined)
             parent = null;
 
         // GENERATE KEY
@@ -219,7 +226,8 @@ serviceModule.factory('cc-gateway', ['websocket', 'cc-crypt', function (ws, cryp
             destination: bintohex(contact.getAddress()),
             data: message,
             destination_key: contact.encrypt(key.toString() + iv.toString()),
-            source_key: crypt.encrypt(key.toString() + iv.toString())
+            source_key: crypt.encrypt(key.toString() + iv.toString()),
+            sign: crypt.sign(data)
         });
         ws.send(p.toJson());
     }
@@ -227,7 +235,7 @@ serviceModule.factory('cc-gateway', ['websocket', 'cc-crypt', function (ws, cryp
     return Service;
 }]);
 
-serviceModule.factory('cc-contact', ['websocket','$q', function (ws, $q) {
+serviceModule.factory('cc-contact', ['websocket', '$q', function (ws, $q) {
     var callback_id = 0;
     var callback = new Array();
     var callback_contact_id = 0;
@@ -256,10 +264,18 @@ serviceModule.factory('cc-contact', ['websocket','$q', function (ws, $q) {
             item();
         });
 
-        callback_contact.map(function(item, index) {
-            if(Service.exists(item.address)) {
-                item.deffered.resolve(Service.contacts[item.address]);
-                delete callback_contact[index];
+        var run = function(item, callback_contact, index) {
+            item.deffered.resolve(Service.contacts[item.address]);
+            delete callback_contact[index];
+        }
+
+        callback_contact.map(function (item, index) {
+            if (Service.exists(item.address)) {
+                if (item.type === undefined) {
+                    run(item, callback_contact, index);
+                } else if(item.type === 'pubkey' && Service.contacts[item.address].hasPubkey()) {
+                    run(item, callback_contact, index);
+                }
             }
         });
 
@@ -284,28 +300,33 @@ serviceModule.factory('cc-contact', ['websocket','$q', function (ws, $q) {
         return ready;
     };
 
-    Service.exists = function(key) {
+    Service.exists = function (key) {
         return (Service.contacts[key] !== undefined && typeof Service.contacts[key] === 'object');
     }
 
     Service.get = function (key) {
-        if(Service.contacts[key] !== undefined && typeof Service.contacts[key] === 'object')
+        if (Service.contacts[key] !== undefined && typeof Service.contacts[key] === 'object')
             return Service.contacts[key];
         else
             return null;
     }
 
-    Service.getAsync = function (key) {
+    Service.getAsync = function (key, callback, type) {
         var deferred = $q.defer();
         callback_contact[callback_contact_id] = {
             address: key,
-            deffered: deferred
+            deffered: deferred,
+            type: type
         };
 
-        return deferred.promise;
+        var out = deferred.promise.then(callback);
+
+        this.fire();
+
+        return out;
     }
 
-    Service.reload = function() {
+    Service.reload = function () {
         pn = new Packet(null, PACKET_CONTACT, PACKET_CONTACT_LIST);
         ws.send(pn.toBinary());
     };
@@ -326,9 +347,6 @@ serviceModule.factory('cc-contact', ['websocket','$q', function (ws, $q) {
             Service.contacts[contact.key] = new Friend();
             Service.contacts[contact.key].setName(contact.name);
             Service.contacts[contact.key].setAddress(hextobin(contact.key));
-
-            // TEMPORALY
-            //chat.friends[contact.key] = Service.contacts[contact.key];
 
             var pack = new Packet(hextobin(contact.key), PACKET_CONTACT, PACKET_CONTACT_PUBKEY);
             ws.send(pack.toBinary());
@@ -362,6 +380,8 @@ serviceModule.factory('cc-contact', ['websocket','$q', function (ws, $q) {
 
 
         Service.contacts[bintohex(key)].setKey(pubkey);
+
+        Service.fire();
     });
 
     return Service;
@@ -415,11 +435,11 @@ serviceModule.factory('cc-msg', ['websocket', 'cc-crypt', 'cc-contact', function
     };
 
     /*
-    Service.reload = function() {
-        pn = new Packet(null, PACKET_MESSAGE, PACKET_MESSAGE_LIST);
-        ws.send(pn.toJson());
-    }
-    */
+     Service.reload = function() {
+     pn = new Packet(null, PACKET_MESSAGE, PACKET_MESSAGE_LIST);
+     ws.send(pn.toJson());
+     }
+     */
 
     Service.addMessage = function (id, message) {
         if (this.messages.hasOwnProperty(id)) {
@@ -498,8 +518,27 @@ serviceModule.factory('cc-msg', ['websocket', 'cc-crypt', 'cc-contact', function
 
         msg.setData(msg.decrypt(crypt));
 
-        Service.addMessage(msg.getId(), msg);
-        Service.check();
+        var succ = function (msg) {
+            Service.addMessage(msg.getId(), msg);
+            Service.check();
+        }
+
+        // CHECK MESSAGE SIGN
+        if (data.sign === undefined)
+            return console.log("Undefined message signature !!!");
+        if (data.source == crypt.getAddress()) {
+            if (crypt.verify(msg.getData(), data.sign) === false)
+                return console.log("Wrong sign hash !!!");
+
+            succ(msg);
+        } else {
+            contact.getAsync(data.source, function () {
+                if (contact.get(data.source).rsa.verifyHexSignatureForMessage(data.sign, msg.getData()) === false)
+                    return $.notify("Wrong message signature. Probably fake message !!!", "error");
+                else
+                    succ(msg);
+            }, 'pubkey');
+        }
     });
 
     ws.handlePacket({type: PACKET_MESSAGE, subtype: PACKET_MESSAGE_NEW}, function (packet) {
@@ -511,53 +550,6 @@ serviceModule.factory('cc-msg', ['websocket', 'cc-crypt', 'cc-contact', function
         pn = new Packet(packet.getData(), PACKET_MESSAGE, PACKET_MESSAGE_GET);
         ws.send(pn.toBinary());
     });
-
-    return Service;
-}]);
-
-serviceModule.factory('cc-notification', [function () {
-    var Service = {};
-
-    var active = false;
-
-    /*
-    var opts = {
-        lines: 17, // The number of lines to draw
-        length: 0, // The length of each line
-        width: 12, // The line thickness
-        radius: 46, // The radius of the inner circle
-        corners: 1, // Corner roundness (0..1)
-        rotate: 0, // The rotation offset
-        direction: 1, // 1: clockwise, -1: counterclockwise
-        color: '#000', // #rgb or #rrggbb or array of colors
-        speed: 1.1, // Rounds per second
-        trail: 56, // Afterglow percentage
-        shadow: false, // Whether to render a shadow
-        hwaccel: false, // Whether to use hardware acceleration
-        className: 'spinner', // The CSS class to assign to the spinner
-        zIndex: 2e9, // The z-index (defaults to 2000000000)
-        top: 'auto', // Top position relative to parent in px
-        left: 'auto' // Left position relative to parent in px
-    };
-*/
-    var spinner = null;
-
-
-    Service.start = function() {
-        var target = document.getElementById('notificationArea');
-        spinner = new Spinner().spin(target);
-
-        active = true;
-    };
-
-
-
-    Service.stop = function() {
-        if(active)
-            spinner.stop();
-
-        active = false;
-    };
 
     return Service;
 }]);

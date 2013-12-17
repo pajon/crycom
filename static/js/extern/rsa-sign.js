@@ -90,9 +90,7 @@ function _rsasign_verifySignatureWithArgs(sMsg, biSig, hN, hE) {
 
 function _rsasign_verifyHexSignatureForMessage(hSig, sMsg) {
     var biSig = parseBigInt(hSig, 16);
-    var result = _rsasign_verifySignatureWithArgs(sMsg, biSig,
-        this.n.toString(16),
-        this.e.toString(16));
+    var result = _rsasign_verifySignatureWithArgs(sMsg, biSig, this.n.toString(16), this.e.toString(16));
     return result;
 }
 

@@ -7,7 +7,7 @@ Friend = function() {
     this.rsa = new RSAKey();
 
     // PUBLIC KEY
-    this.pubkey = null;
+    this.pubkey = false;
 };
 
 Friend.prototype.setAddress = function(address) {
@@ -27,7 +27,12 @@ Friend.prototype.getName = function() {
     return this.name;
 };
 
+Friend.prototype.hasPubkey = function() {
+    return this.pubkey;
+}
+
 Friend.prototype.setKey = function(key) {
+    this.pubkey = true;
     this.rsa.setPublic(buftostr(key).toLowerCase(), "65537");
 };
 
