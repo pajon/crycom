@@ -93,10 +93,10 @@ function binLength(data) {
 
 /*
 $(function () {
-    chat.loader();
+    app.loader();
 });
 
-var chat = {
+var app = {
     init: false,
     // KEYS
     pubkey: null,
@@ -229,7 +229,7 @@ var chat = {
             p = new Packet(null, PACKET_AUTH, PACKET_AUTH_START);
             p.setData(pem);
 
-            chat.websocket.send(p.toBinary());
+            app.websocket.send(p.toBinary());
         }
 
         // SO TOO BAD
@@ -274,7 +274,7 @@ var chat = {
         sendMessage: function (idInput, dest) {
             var message = $('#' + idInput).val();
 
-            var contact = chat.friends[dest];
+            var contact = app.friends[dest];
 
             if (typeof dest === 'string' && dest.length === 64)
                 dest = hextobin(dest);
@@ -312,7 +312,7 @@ var chat = {
                 destination: bintohex(dest),
                 data: message,
                 destination_key: contact.encrypt(key.toString() + iv.toString()),
-                source_key: chat.encrypt(key.toString() + iv.toString())
+                source_key: app.encrypt(key.toString() + iv.toString())
 
             }
 
