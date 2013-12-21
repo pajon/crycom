@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 module.exports = {
     init: function (app, express) {
         app.use(function (req, res, next) {
@@ -19,6 +21,21 @@ module.exports = {
             } else {
                 next();
             }
+        });
+
+        app.get('/scripts.js', function(req, res) {
+            var dir = __dirname + '/static/js/extern';
+
+            var output = "";
+            output += fs.readFileSync(dir + '/jsbn.js');
+            output += fs.readFileSync(dir + '/jsbn2.js');
+            output += fs.readFileSync(dir + '/base64.js');
+            output += fs.readFileSync(dir + '/rsa.js');
+            output += fs.readFileSync(dir + '/rsa2.js');
+            output += fs.readFileSync(dir + '/rsa-sign.js');
+            output += fs.readFileSync(dir + '/pem.js');
+
+            res.send(output);
         });
 
         app.use(express.static(__dirname + '/static'));
