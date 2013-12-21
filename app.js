@@ -5,35 +5,15 @@ var client = require('./lib/client')
 var db = require('./lib/database')
 var config = require('./lib/config')
 var server = require('./lib/server')
+var web = require('./web')
 
 var http = require('http')
 var express = require('express')
 var app = express()
 var port = process.env.PORT || 8000;
 
-app.use(function(req, res, next){
-    var hostarr = req.headers.host.split(":");
-    var host = null;
-    if(typeof hostarr === 'object') {
-        host = hostarr[0];
-    } else
-        host = hostarr;
 
-
-    if (host.match(/^app.crycom.(loc|net)$/) === null) {
-        if(host.match(/crycom.(loc|net)$/) === null)
-            res.redirect('http://app.crycom.net' + req.url);
-        else {
-            var dname = host.split(".");
-            res.redirect('http://app.crycom.' + dname[dname.length - 1] + req.url);
-        }
-    } else {
-        next();
-    }
-});
-
-app.use(express.static(__dirname + '/static'));
-
+web.init(app, express);
 
 
 var srv = http.createServer(app);
