@@ -29,7 +29,7 @@ define(['./module'], function (app) {
                 p.setData({
                     pem: crypt.exportPublicPem(),
                     name: user.username,
-                    email: user.email
+                    email: "" //user.email
                 });
                 ws.send(p.toJson());
             }, 1000);
