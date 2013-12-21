@@ -65,10 +65,12 @@ chatApp.controller('AppController', ['$scope', 'websocket', 'cc-crypt', '$locati
     var Service = {};
 
     Service.hidePanel = function () {
+        $('body, html').css('overflow', 'visible');
         $('#content').addClass('cc-onepage');
     };
 
     Service.showPanel = function () {
+        $('body, html').css('overflow', 'hidden');
         $('#content').removeClass('cc-onepage');
     };
 
@@ -138,16 +140,19 @@ chatApp.controller('RegisterController', ['$scope', 'websocket', 'cc-crypt', '$l
         $.notify("Generating certificate!", "info");
 
 
-        crypt.generate(2048, true);
+        // FIX NOTIFY
+        setTimeout(function() {
+            crypt.generate(2048, true);
 
 
-        p = new Packet(null, PACKET_AUTH, PACKET_AUTH_REGISTER);
-        p.setData({
-            pem: crypt.exportPublicPem(),
-            name: user.username,
-            email: user.email
-        });
-        ws.send(p.toJson());
+            p = new Packet(null, PACKET_AUTH, PACKET_AUTH_REGISTER);
+            p.setData({
+                pem: crypt.exportPublicPem(),
+                name: user.username,
+                email: user.email
+            });
+            ws.send(p.toJson());
+        }, 1000);
     };
 
     $scope.reset = function () {

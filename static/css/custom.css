@@ -1,7 +1,7 @@
 body, html {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     background-color: #FFFFFF;
 }
 
@@ -13,26 +13,57 @@ header {
     background-color: #FFFFFF;
 }
 
+.register h1 {
+    font-family: 'Lato';
+    font-weight: 300;
+    font-size: 45px;
+}
+
+h4, .register-form h4 {
+    font-family: 'Lato';
+    font-size: 30px;
+    font-weight: normal;
+    font-weight: 300;
+}
+
+.faq h4 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+p {
+    text-align: justify;
+}
+
+.register-form h4 {
+    text-align: center;
+    font-size: 25px;
+}
+
+.register-form .well {
+    background-color: #FCFCFC;
+    padding-bottom: 8px;
+    border-radius:  0px;
+}
+
 header .btn-group {
     margin: 5px 15px 0px 0px;
 }
 
 header span.logo {
-    /* color: #6D99BF; */
-    /*color: white; */
-    /* background-color: #525252; */
     display: inline-block;
     height: 40px;
     overflow: hidden;
     float: left;
 
     padding-left: 30px;
-    padding-top: 3px;
-    
-    font-size: 24px;
+    margin-top: -3px;
+
+    font-family: 'Lato';
+    font-weight: 300;
+    font-size: 30px;
 
     color: black;
-    font-family: Arial;
 }
 
 .clear { clear: both; }
@@ -60,6 +91,10 @@ header span.logo {
 
     border-top: 1px solid #3C3C3C;
     overflow: hidden;
+}
+
+#content.cc-onepage {
+    overflow: visible;
 }
 
 #content.cc-onepage .cc-panel {
@@ -204,11 +239,10 @@ ul.cc-message-menu li:hover {
 }
 
 .register-form {
-    padding-top: 50px;
+    padding-top: 80px;
 }
 
 .register-form label {
-     margin-top: 6px;
 
  }
 

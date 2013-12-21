@@ -42,6 +42,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="/js/extern/bootstrap.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
     <link href="/css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="/css/bootstrap-glyphicons.css" rel="stylesheet" media="screen">
 
@@ -57,10 +58,9 @@
         <div class="cc-content col-xs-12 col-sm-10 col-md-10">
             <div class="cc-navbar">
                 <ul class="nav nav-pills">
-                    <li class="active" ng-click="activeHead($event)"><a href="#/message">Mail</a></li>
-                    <!-- <li><a href="#" ng-click="activeHead($event)" s>Storage</a></li> -->
+                    <li class="active" ng-click="activeHead($event)"><a href="#/message">Messages</a></li>
+                    <li><a href="#/contact/add" ng-click="activeHead($event)">Contacts</a></li>
                     <li><a href="#/setting" ng-click="activeHead($event)">Settings</a></li>
-                    <li><a href="#/contact/add" ng-click="activeHead($event)">Add contact</a></li>
                 </ul>
             </div>
         </div>
