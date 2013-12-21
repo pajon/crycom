@@ -4,10 +4,6 @@ define([
     'extern/prng4',
     'extern/rng',
     'extern/rsa',
-    'extern/rsa2',
-    'extern/rsa-sign',
-    'extern/base64',
-    'extern/pem',
     'extern/aes',
     'extern/asn1',
     'extern/bootstrap',
@@ -15,6 +11,10 @@ define([
     'extern/jstorage',
     'extern/notify',
     'extern/sha256',
-    'extern/spin'
+    'extern/spin',
+    'extern/rsa2',
+    'extern/rsa-sign',
+    'extern/base64',
+    'extern/pem',
 
 ], function () {});
